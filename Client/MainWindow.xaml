@@ -5,12 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="498.011">
-    <Grid Margin="0,0,2,0">
-        <DataGrid x:Name="UsersTable" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" AutoGenerateColumns="False" GridLinesVisibility="All"  HorizontalAlignment="Left" Height="348" Margin="10,10,0,0" VerticalAlignment="Top" Width="467">
+        Title="Chatting service" Height="451.194" Width="498.011" ResizeMode="NoResize">
+    <Grid Margin="0,0,2,-1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="59*"/>
+            <ColumnDefinition Width="431*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="UsersTable" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}"  SelectedItem="{Binding SelectedUser}" IsReadOnly="True" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" AutoGenerateColumns="False" GridLinesVisibility="All"  HorizontalAlignment="Left" Height="348" Margin="10,10,0,0" VerticalAlignment="Top" Width="467" Grid.ColumnSpan="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="*"/>
+                <DataGridTextColumn Header="IP Address" Binding="{Binding Ip}" Width="*"/>
+                <DataGridTextColumn Header="Port" Binding="{Binding Port}" Width="*"/>
+            </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Start chat" Command="{Binding StartChatCommand}" CommandParameter="{Binding ElementName=UsersTable, Path=SelectedItem}" HorizontalAlignment="Left" Margin="352,383,0,0" VerticalAlignment="Top" Width="125" Height="27"/>
-        <Button Content="Revocate certificate" Command="{Binding RevocateCertificateCommand}" HorizontalAlignment="Left" Margin="10,383,0,0" VerticalAlignment="Top" Width="125" Height="27"/>
+        <Button Content="Start chat" Command="{Binding StartChatCommand}" CommandParameter="{Binding ElementName=UsersTable, Path=SelectedItem}" HorizontalAlignment="Left" Margin="292.931,383,0,0" VerticalAlignment="Top" Width="125" Height="27" Grid.Column="1"/>
+        <Button Content="Revocate certificate" Command="{Binding RevocateCertificateCommand}" HorizontalAlignment="Left" Margin="10,383,0,0" VerticalAlignment="Top" Width="125" Height="27" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

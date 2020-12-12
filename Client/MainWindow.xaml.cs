@@ -1,4 +1,5 @@
-﻿using Client.ViewModels;
+﻿using Client.Commands;
+using Client.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,10 @@ namespace Client
     {
         public MainWindow()
         {
-            DataContext = new MainWindowViewModel();
+            MainWindowViewModel vm = new MainWindowViewModel();
+            vm.RevocateCertficicateCommand = new RevocateCertificateCommand();
+            vm.StartChatCommand= new StartChatCommand(vm);
+            DataContext = vm;
             InitializeComponent();
         }
     }

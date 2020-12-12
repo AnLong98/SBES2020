@@ -31,7 +31,7 @@ namespace Client.Commands
 
         public bool CanExecute(object parameter)
         {
-            return receiver.SelectedUser != null;
+            return parameter != null;
         }
 
         public void Execute(object parameter)
