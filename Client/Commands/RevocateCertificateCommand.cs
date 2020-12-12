@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,12 @@ namespace Client.Commands
 {
     public class RevocateCertificateCommand : ICommand
     {
+        private MainWindowViewModel receiver;
+
+        public RevocateCertificateCommand(MainWindowViewModel receiver)
+        {
+            this.receiver = receiver;
+        }
 
         public event EventHandler CanExecuteChanged
         {
@@ -29,7 +36,7 @@ namespace Client.Commands
 
         public void Execute(object parameter)
         {
-            //TODO implement this thing
+            receiver.RevocateCertificate();
         }
     }
 }

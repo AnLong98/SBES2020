@@ -1,24 +1,35 @@
-﻿using System;
+﻿using Client.Contracts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Client.ViewModels
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : IClient
     {
         #region Fields
         private BindingList<User> users;
         private User selectedUser;
+        private ICentralAuthServer authServerProxy;
+        private IMonitoringServer monitoringServerProxy;
+        private IConnectionManager connectionManager;
+
+        private ICentralAuthServer centralAuthServer;
         #endregion
 
         #region CTOR
-        public MainWindowViewModel(BindingList<User> users)
+        public MainWindowViewModel(IConnectionManager connectionManager)
         {
-            Users = users;
+            this.connectionManager = connectionManager;
+            ConnectAuthToServer();
+            AuthenticateToAuthServer();
+            Users = GetUsersFromServer();
         }
 
         //Testing CTOR
@@ -46,21 +57,6 @@ namespace Client.ViewModels
                 OnPropertyChanged("Users");
             }
         }
-
-        public User SelectedUser
-        {
-            get
-            {
-                return selectedUser;
-            }
-            set
-            {
-                selectedUser = value;
-                OnPropertyChanged("SelectedUser");
-            }
-
-        }
-
         #endregion
 
         private BindingList<User> MockUsers()
@@ -81,6 +77,80 @@ namespace Client.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        #region Misc methods
+        private void ConnectAuthToServer()
+        {
+            while (true)
+            {
+                try
+                {
+                    centralAuthServer = connectionManager.GetAuthServerProxy();
+                    return;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error occured connecting to Central auth server.Reconnecting in 3 seconds..");
+                    Console.WriteLine(e.Message);
+                }
+                Thread.Sleep(3000);
+            }
+            
+        }
+
+        private void AuthenticateToAuthServer()
+        {
+            string ownIp = "something"; //Add adequate values once we figure out where we will get them from
+            string ownPort = "something";
+
+
+            try
+            {
+                centralAuthServer.Authenticate(ownIp, ownPort);
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                ConnectAuthToServer();
+                AuthenticateToAuthServer();
+            }
+
+            
+        }
+
+        private BindingList<User> GetUsersFromServer()
+        {
+            try
+            {
+                return new BindingList<User>(authServerProxy.GetAllUsers());
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                ConnectAuthToServer();
+                return GetUsersFromServer();
+            }
+        }
+
+        public void RevocateCertificate()
+        {
+            try
+            {
+                authServerProxy.RevocateCertificate();
+                MessageBox.Show("Revocation Successfull!");
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("Error occured revoking certificate. Try again in a few minutes.");
+            }
+        }
+        #endregion
+
+        #region Implemented interface
+        public void sendMessage(string message)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
 
     }
 
