@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="MainWindow" Height="450" Width="498.011">
+    <Grid Margin="0,0,2,0">
+        <DataGrid x:Name="UsersTable" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" AutoGenerateColumns="False" GridLinesVisibility="All"  HorizontalAlignment="Left" Height="348" Margin="10,10,0,0" VerticalAlignment="Top" Width="467">
+        </DataGrid>
+        <Button Content="Start chat" Command="{Binding StartChatCommand}" CommandParameter="{Binding ElementName=UsersTable, Path=SelectedItem}" HorizontalAlignment="Left" Margin="352,383,0,0" VerticalAlignment="Top" Width="125" Height="27"/>
+        <Button Content="Revocate certificate" Command="{Binding RevocateCertificateCommand}" HorizontalAlignment="Left" Margin="10,383,0,0" VerticalAlignment="Top" Width="125" Height="27"/>
+
     </Grid>
 </Window>
