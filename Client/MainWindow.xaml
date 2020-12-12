@@ -11,7 +11,7 @@
             <ColumnDefinition Width="59*"/>
             <ColumnDefinition Width="431*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="UsersTable" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}"  SelectedItem="{Binding SelectedUser}" IsReadOnly="True" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" AutoGenerateColumns="False" GridLinesVisibility="All"  HorizontalAlignment="Left" Height="348" Margin="10,10,0,0" VerticalAlignment="Top" Width="467" Grid.ColumnSpan="2">
+        <DataGrid x:Name="UsersTable" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" AutoGenerateColumns="False" GridLinesVisibility="All"  HorizontalAlignment="Left" Height="348" Margin="10,10,0,0" VerticalAlignment="Top" Width="467" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="*"/>
                 <DataGridTextColumn Header="IP Address" Binding="{Binding Ip}" Width="*"/>

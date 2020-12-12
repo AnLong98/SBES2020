@@ -15,7 +15,6 @@ namespace Client.ViewModels
     {
         #region Fields
         private BindingList<User> users;
-        private User selectedUser;
         private ICentralAuthServer authServerProxy;
         private IMonitoringServer monitoringServerProxy;
         private IConnectionManager connectionManager;
@@ -23,13 +22,19 @@ namespace Client.ViewModels
         private ICentralAuthServer centralAuthServer;
         #endregion
 
-        #region CTOR
+        #region CTOR and Startup
         public MainWindowViewModel(IConnectionManager connectionManager)
         {
             this.connectionManager = connectionManager;
+            new Task(StartUp).Start();
+        }
+
+        private void StartUp()
+        {
             ConnectAuthToServer();
             AuthenticateToAuthServer();
-            Users = GetUsersFromServer();
+            Users = MockUsers();
+            //Users = GetUsersFromServer();
         }
 
         //Testing CTOR
@@ -40,7 +45,7 @@ namespace Client.ViewModels
         #endregion
 
         #region Commands
-        public ICommand RevocateCertficicateCommand { get; set; }
+        public ICommand RevocateCertificateCommand { get; set; }
         public ICommand StartChatCommand { get; set; }
         #endregion
 
@@ -81,21 +86,17 @@ namespace Client.ViewModels
         #region Misc methods
         private void ConnectAuthToServer()
         {
-            while (true)
+
+            try
             {
-                try
-                {
-                    centralAuthServer = connectionManager.GetAuthServerProxy();
-                    return;
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show("Error occured connecting to Central auth server.Reconnecting in 3 seconds..");
-                    Console.WriteLine(e.Message);
-                }
-                Thread.Sleep(3000);
+                centralAuthServer = connectionManager.GetAuthServerProxy();
+                return;
             }
-            
+            catch (Exception e)
+            {
+                MessageBox.Show("Error occured connecting to Central auth server.");
+                Console.WriteLine(e.Message);
+            }
         }
 
         private void AuthenticateToAuthServer()
@@ -103,15 +104,19 @@ namespace Client.ViewModels
             string ownIp = "something"; //Add adequate values once we figure out where we will get them from
             string ownPort = "something";
 
-
-            try
+            while (true)
             {
-                centralAuthServer.Authenticate(ownIp, ownPort);
-            }catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                ConnectAuthToServer();
-                AuthenticateToAuthServer();
+                try
+                {
+                    centralAuthServer.Authenticate(ownIp, ownPort);
+                    return;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error occured contacting Central auth server. Click OK to try again...");
+                    ConnectAuthToServer();
+                }
+                Thread.Sleep(5000);
             }
 
             
@@ -119,14 +124,18 @@ namespace Client.ViewModels
 
         private BindingList<User> GetUsersFromServer()
         {
-            try
+            while (true)
             {
-                return new BindingList<User>(authServerProxy.GetAllUsers());
-            }catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                ConnectAuthToServer();
-                return GetUsersFromServer();
+                try
+                {
+                    return new BindingList<User>(authServerProxy.GetAllUsers());
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error occured contacting Central auth server. Click OK to try again...");
+                    ConnectAuthToServer();
+                }
+                Thread.Sleep(5000);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Client.Commands;
+using Client.Managers;
 using Client.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,8 @@ namespace Client
     {
         public MainWindow()
         {
-            MainWindowViewModel vm = new MainWindowViewModel();
-            vm.RevocateCertficicateCommand = new RevocateCertificateCommand();
+            MainWindowViewModel vm = new MainWindowViewModel(new ConnectionManager());
+            vm.RevocateCertificateCommand = new RevocateCertificateCommand(vm);
             vm.StartChatCommand= new StartChatCommand(vm);
             DataContext = vm;
             InitializeComponent();
