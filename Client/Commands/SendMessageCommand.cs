@@ -8,11 +8,11 @@ using System.Windows.Input;
 
 namespace Client.Commands
 {
-    public class StartChatCommand : ICommand
+    public class SendMessageCommand : ICommand
     {
-        private MainWindowViewModel receiver;
+        private ChatWindowViewModel receiver;
 
-        public StartChatCommand(MainWindowViewModel receiver)
+        public SendMessageCommand(ChatWindowViewModel receiver)
         {
             this.receiver = receiver;
         }
@@ -31,13 +31,13 @@ namespace Client.Commands
 
         public bool CanExecute(object parameter)
         {
-            return parameter != null;
+            string text = (parameter as string);
+            return text != null && text != string.Empty;
         }
 
         public void Execute(object parameter)
         {
-            receiver.StartChat(parameter as User);
+            receiver.SendMessage(parameter as string);
         }
     }
 }
-

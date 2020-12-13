@@ -1,4 +1,5 @@
 ﻿using Client.Contracts;
+using Client.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using System.Windows.Input;
 
 namespace Client.ViewModels
 {
-    public class MainWindowViewModel : IClient
+    public class MainWindowViewModel : IClient, INotifyPropertyChanged
     {
         #region Fields
         private BindingList<User> users;
@@ -31,8 +32,8 @@ namespace Client.ViewModels
 
         private void StartUp()
         {
-            ConnectAuthToServer();
-            AuthenticateToAuthServer();
+            //ConnectAuthToServer();
+            //AuthenticateToAuthServer();
             Users = MockUsers();
             //Users = GetUsersFromServer();
         }
@@ -157,6 +158,14 @@ namespace Client.ViewModels
         public void sendMessage(string message)
         {
             throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Start Chat
+        public void StartChat(User user)
+        {
+
+            new ChatWindow(user.Username, "Pedjica").Show();
         }
         #endregion
 
