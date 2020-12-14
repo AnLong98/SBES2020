@@ -14,9 +14,9 @@ namespace Service
             NetTcpBinding binding = new NetTcpBinding();
             string address = "net.tcp://localhost:9999/Service";
 
-            /*binding.Security.Mode = SecurityMode.Transport;
+            binding.Security.Mode = SecurityMode.Transport;
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
-            binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;*/
+            binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
 
             ServiceHost host = new ServiceHost(typeof(WCFService));
             host.AddServiceEndpoint(typeof(ICentralAuthServer), binding, address);
