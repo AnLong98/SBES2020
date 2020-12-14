@@ -64,6 +64,9 @@
     <Compile Include="Converters\StringLineConverter.cs" />
     <Compile Include="Managers\ConnectionManager.cs" />
     <Compile Include="Contracts\IConnectionManager.cs" />
+    <Compile Include="Managers\MessageNotificationManager.cs" />
+    <Compile Include="Service Providers\MessageReceivingService.cs" />
+    <Compile Include="ServiceHosts\ClientMessagingHost.cs" />
     <Compile Include="ViewModels\ChatWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="Views\ChatWindow.xaml">
@@ -121,8 +124,6 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Service Providers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
