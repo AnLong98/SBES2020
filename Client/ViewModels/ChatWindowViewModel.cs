@@ -1,4 +1,5 @@
 ﻿using Client.Contracts;
+using Client.Managers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,6 +26,7 @@ namespace Client.ViewModels
         {
             this.chatUserName = chatUserName;
             this.chatPeerUserName = chatPeerUserName;
+            MessageNotificationManager.Instance().AddReceiver(this, chatPeerUserName);
             new Task(MockChatting).Start();
         }
 

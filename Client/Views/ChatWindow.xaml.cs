@@ -24,7 +24,7 @@ namespace Client.Views
     {
         public ChatWindow(string chatPeer, string chatUser)
         {
-            ChatWindowViewModel viewModel = new ChatWindowViewModel(chatPeer, chatUser);
+            ChatWindowViewModel viewModel = new ChatWindowViewModel(chatUser, chatPeer);
             viewModel.SendMessageCommand = new SendMessageCommand(viewModel);
             DataContext = viewModel;
             InitializeComponent();

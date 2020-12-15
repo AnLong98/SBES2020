@@ -25,7 +25,7 @@ namespace Client
     {
         public MainWindow()
         {
-            MainWindowViewModel vm = new MainWindowViewModel(new ConnectionManager());
+            MainWindowViewModel vm = new MainWindowViewModel(new ConnectionManager(), new ServiceHosts.ClientMessagingHost());
             vm.RevocateCertificateCommand = new RevocateCertificateCommand(vm);
             vm.StartChatCommand= new StartChatCommand(vm);
             DataContext = vm;

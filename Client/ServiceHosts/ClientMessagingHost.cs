@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Client.Service_Providers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,27 +14,48 @@ namespace Client.ServiceHosts
     {
         private NetTcpBinding binding = new NetTcpBinding();
         private string address = "net.tcp://localhost:9989/Client";
-        private ServiceHost;
+        private ServiceHost host;
 
         public ClientMessagingHost()
         {
-            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+            //binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+            host = new ServiceHost(typeof(MessageReceivingService));
+            host.AddServiceEndpoint(typeof(IClient), binding, address);
+
+           /* host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
+            host.Credentials.ClientCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
+            host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, srvCertCN);*/
         }
-        
 
-			
-        /*ServiceHost host = new ServiceHost(typeof(WCFService));
-        host.AddServiceEndpoint(typeof(IWCFContract), binding, address);
+        public bool Open()
+        {
+            try
+            {
+                host.Open();
+                return true;
+            }catch(Exception e)
+            {
+                //handle
+            }
 
-			///Custom validation mode enables creation of a custom validator - CustomCertificateValidator
-			host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
-			host.Credentials.ClientCertificate.Authentication.CustomCertificateValidator = new ServiceCertValidator();
+            return false;
+        }
 
-        ///If CA doesn't have a CRL associated, WCF blocks every client because it cannot be validated
-        host.Credentials.ClientCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
 
-			///Set appropriate service's certificate on the host. Use CertManager class to obtain the certificate based on the "srvCertCN"
-			host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, srvCertCN);*/
+        public bool Close()
+        {
+            try
+            {
+                host.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                //handle
+            }
+
+            return false;
+        }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Client.Contracts;
+using Client.ServiceHosts;
 using Client.Views;
 using System;
 using System.Collections.Generic;
@@ -19,19 +20,21 @@ namespace Client.ViewModels
         private ICentralAuthServer authServerProxy;
         private IMonitoringServer monitoringServerProxy;
         private IConnectionManager connectionManager;
-
+        private ClientMessagingHost host;
         private ICentralAuthServer centralAuthServer;
         #endregion
 
         #region CTOR and Startup
-        public MainWindowViewModel(IConnectionManager connectionManager)
+        public MainWindowViewModel(IConnectionManager connectionManager, ClientMessagingHost host)
         {
             this.connectionManager = connectionManager;
+            this.host = host;
             new Task(StartUp).Start();
         }
 
         private void StartUp()
         {
+            host.Open();
             //ConnectAuthToServer();
             //AuthenticateToAuthServer();
             Users = MockUsers();
@@ -164,7 +167,6 @@ namespace Client.ViewModels
         #region Start Chat
         public void StartChat(User user)
         {
-
             new ChatWindow(user.Username, "Pedjica").Show();
         }
         #endregion
