@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace Client.ViewModels
         private IConnectionManager connectionManager;
         private ClientMessagingHost host;
         private ICentralAuthServer centralAuthServer;
+        private string currentUserName;
         #endregion
 
         #region CTOR and Startup
@@ -29,6 +31,7 @@ namespace Client.ViewModels
         {
             this.connectionManager = connectionManager;
             this.host = host;
+            currentUserName = WindowsIdentity.GetCurrent().Name;
             new Task(StartUp).Start();
         }
 
@@ -152,7 +155,7 @@ namespace Client.ViewModels
         #region Start Chat
         public void StartChat(User user)
         {
-            new ChatWindow(user.Username, "Pedjica").Show();
+            new ChatWindow(user.Username, currentUserName).Show();
         }
         #endregion
 

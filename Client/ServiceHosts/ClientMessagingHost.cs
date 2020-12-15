@@ -6,7 +6,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Security;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Client.ServiceHosts
@@ -68,5 +67,6 @@ namespace Client.ServiceHosts
         {
             return "127.0.0.1";
         }
+        
     }
 }
