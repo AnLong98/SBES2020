@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Client.ViewModels
 {
-    public class MainWindowViewModel : IClient, INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         #region Fields
         private BindingList<User> users;
@@ -36,15 +36,9 @@ namespace Client.ViewModels
         {
             host.Open();
             //ConnectAuthToServer();
-            //AuthenticateToAuthServer();
+            //AuthenticateToAuthServer(host.GetIP(), host.GetPort().ToString());
             Users = MockUsers();
             //Users = GetUsersFromServer();
-        }
-
-        //Testing CTOR
-        public MainWindowViewModel()
-        {
-            Users = MockUsers();
         }
         #endregion
 
@@ -103,10 +97,8 @@ namespace Client.ViewModels
             }
         }
 
-        private void AuthenticateToAuthServer()
+        private void AuthenticateToAuthServer(string ownIp, string ownPort)
         {
-            string ownIp = "something"; //Add adequate values once we figure out where we will get them from
-            string ownPort = "something";
 
             while (true)
             {
@@ -154,13 +146,6 @@ namespace Client.ViewModels
             {
                 MessageBox.Show("Error occured revoking certificate. Try again in a few minutes.");
             }
-        }
-        #endregion
-
-        #region Implemented interface
-        public void sendMessage(string message)
-        {
-            throw new NotImplementedException();
         }
         #endregion
 
