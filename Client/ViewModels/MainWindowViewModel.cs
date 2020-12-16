@@ -1,6 +1,6 @@
 ﻿using Client.Contracts;
+using Client.Managers;
 using Client.ServiceHosts;
-using Client.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,6 +30,7 @@ namespace Client.ViewModels
         public MainWindowViewModel(IConnectionManager connectionManager, ClientMessagingHost host)
         {
             this.connectionManager = connectionManager;
+            authServerProxy = connectionManager.GetAuthServerProxy();
             this.host = host;
             currentUserName = WindowsIdentity.GetCurrent().Name;
             new Task(StartUp).Start();
@@ -38,10 +39,10 @@ namespace Client.ViewModels
         private void StartUp()
         {
             host.Open();
-            //ConnectAuthToServer();
-            //AuthenticateToAuthServer(host.GetIP(), host.GetPort().ToString());
-            Users = MockUsers();
-            //Users = GetUsersFromServer();
+            ConnectAuthToServer();
+            AuthenticateToAuthServer(host.GetIP(), host.GetPort().ToString());
+            //Users = MockUsers();
+            Users = GetUsersFromServer();
         }
         #endregion
 
@@ -127,7 +128,9 @@ namespace Client.ViewModels
             {
                 try
                 {
-                    return new BindingList<User>(authServerProxy.GetAllUsers());
+                    List<User> allUsers = authServerProxy.GetAllUsers();
+                    if (allUsers.Count == 0) return new BindingList<User>();
+                    return new BindingList<User>(allUsers);
                 }
                 catch (Exception e)
                 {
@@ -155,7 +158,7 @@ namespace Client.ViewModels
         #region Start Chat
         public void StartChat(User user)
         {
-            new ChatWindow(user.Username, currentUserName).Show();
+            ChatWindowManager.CreateNewForInitiating(user.Username, currentUserName, connectionManager.GetClientProxy(user.Ip, user.Port));
         }
         #endregion
 

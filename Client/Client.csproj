@@ -63,6 +63,7 @@
     <Compile Include="Contracts\ICloseable.cs" />
     <Compile Include="Contracts\IMessageNotifiable.cs" />
     <Compile Include="Converters\StringLineConverter.cs" />
+    <Compile Include="Managers\ChatWindowManager.cs" />
     <Compile Include="Managers\ConnectionManager.cs" />
     <Compile Include="Contracts\IConnectionManager.cs" />
     <Compile Include="Managers\MessageNotificationManager.cs" />

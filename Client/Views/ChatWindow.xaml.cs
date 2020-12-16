@@ -22,9 +22,8 @@ namespace Client.Views
     /// </summary>
     public partial class ChatWindow : Window
     {
-        public ChatWindow(string chatPeer, string chatUser)
+        public ChatWindow(ChatWindowViewModel viewModel)
         {
-            ChatWindowViewModel viewModel = new ChatWindowViewModel(chatUser, chatPeer);
             viewModel.SendMessageCommand = new SendMessageCommand(viewModel);
             DataContext = viewModel;
             InitializeComponent();

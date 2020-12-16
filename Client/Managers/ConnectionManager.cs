@@ -13,7 +13,7 @@ namespace Client.Managers
         public ICentralAuthServer GetAuthServerProxy()
         {
             NetTcpBinding binding = new NetTcpBinding();
-            string address = "net.tcp://localhost:9999/AuthServer"; //Change thi after others implement
+            string address = "net.tcp://localhost:9999/Service";
 
             binding.Security.Mode = SecurityMode.Transport;
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
@@ -34,7 +34,10 @@ namespace Client.Managers
 
         public IClient GetClientProxy(string clientIP, string clientPort)
         {
-            return null;
+            NetTcpBinding binding = new NetTcpBinding();
+            ChannelFactory<IClient> channelFactory = new ChannelFactory<IClient>(binding, $"net.tcp://{clientIP}:{clientPort}/Client");
+
+            return channelFactory.CreateChannel();
 
         }
     }

@@ -22,7 +22,7 @@ namespace Service
 
         public List<User> GetAllUsers()
         {
-            throw new NotImplementedException();
+            return Users.UserAccounts.Values.ToList();
         }
 
         public void RevocateCertificate()

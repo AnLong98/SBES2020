@@ -1,5 +1,4 @@
 ﻿using Client.Contracts;
-using Client.Managers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,12 +21,12 @@ namespace Client.ViewModels
         private string chatUserName;
         private string chatPeerUserName;
 
-        public ChatWindowViewModel(string chatUserName, string chatPeerUserName)
+        public ChatWindowViewModel(string chatUserName, string chatPeerUserName, IClient peerProxy)
         {
             this.chatUserName = chatUserName;
             this.chatPeerUserName = chatPeerUserName;
-            MessageNotificationManager.Instance().AddReceiver(this, chatPeerUserName);
-            new Task(MockChatting).Start();
+            this.messageReceiver = peerProxy;
+            //new Task(MockChatting).Start();
         }
 
         #endregion
@@ -79,7 +78,7 @@ namespace Client.ViewModels
 
             try
             {
-                //messageReceiver.sendMessage(message);
+                messageReceiver.sendMessage(message);
                 Messages += $"\n[{chatUserName}]: " + message;
                 
             }catch(Exception e)

@@ -48,6 +48,11 @@ namespace Client.Managers
             }
         }
 
+        public bool CheckExists(string sender)
+        {
+            return messageReceiversDict.ContainsKey(sender);
+        }
+
 
     }
 }
