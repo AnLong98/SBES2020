@@ -16,11 +16,12 @@ namespace Client.Service_Providers
         public void SendCommunicationRequest(string ownIP, string port)
         {
             string sender = WinLogonNameParser.ParseName(ServiceSecurityContext.Current.WindowsIdentity.Name);
+            string currentUser = WinLogonNameParser.ParseName(WindowsIdentity.GetCurrent().Name);
             if (!MessageNotificationManager.Instance().CheckExists(sender))
             {
                 //TODO: Change this awful code and architecture to something better
                 ConnectionManager connManager = new ConnectionManager();
-                ChatWindowManager.CreateNewChatWindow(sender, WindowsIdentity.GetCurrent().Name, connManager.GetClientProxy(ownIP, port));
+                ChatWindowManager.CreateNewChatWindow(sender, currentUser, connManager.GetClientProxy(ownIP, port));
             }
         }
 

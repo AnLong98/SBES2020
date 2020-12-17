@@ -30,6 +30,7 @@ namespace Client.Managers
                             Dispatcher.CurrentDispatcher));
 
                     ChatWindow tempWindow = new ChatWindow(viewModel);
+                    tempWindow.Title = chatPeerUsername;
                     tempWindow.Closed += (s, e) =>
                         Dispatcher.CurrentDispatcher.BeginInvokeShutdown(DispatcherPriority.Background);
 

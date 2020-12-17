@@ -20,12 +20,14 @@ namespace Client.ViewModels
         private IAESSecurity aesSecurity;
         private string chatUserName;
         private string chatPeerUserName;
+        private string inputText;
 
         public ChatWindowViewModel(string chatUserName, string chatPeerUserName, IClient peerProxy)
         {
             this.chatUserName = chatUserName;
             this.chatPeerUserName = chatPeerUserName;
             this.messageReceiver = peerProxy;
+            this.Messages += $"You are now connected to {chatPeerUserName}";
             //new Task(MockChatting).Start();
         }
 
@@ -59,6 +61,19 @@ namespace Client.ViewModels
                 OnPropertyChanged("Messages");
             }
         }
+
+        public string InputText
+        {
+            get
+            {
+                return inputText;
+            }
+            set
+            {
+                inputText = value;
+                OnPropertyChanged("InputText");
+            }
+        }
         #endregion
 
         #region Property changed event
@@ -80,6 +95,7 @@ namespace Client.ViewModels
             {
                 messageReceiver.SendMessage(message);
                 Messages += $"\n[{chatUserName}]: " + message;
+                InputText = "";
                 
             }catch(Exception e)
             {

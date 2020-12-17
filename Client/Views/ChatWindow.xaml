@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <TextBox x:Name="ChatBox" Text = "{Binding Messages, Mode=OneWay}" HorizontalAlignment="Left" Height="327" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="322" Background="#FFFBF7F7" IsEnabled="False" Grid.ColumnSpan="3" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
          ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-        <TextBox x:Name="NewMessage"  HorizontalAlignment="Left" Height="28" Margin="10,352,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="322" Grid.ColumnSpan="3"/>
+        <TextBox x:Name="NewMessage" Text="{Binding InputText}"  HorizontalAlignment="Left" Height="28" Margin="10,352,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="322" Grid.ColumnSpan="3"/>
         <Button Content="Send" Command="{Binding SendMessageCommand}" CommandParameter="{Binding ElementName=NewMessage, Path=Text}" HorizontalAlignment="Left" Height="25" Margin="10,385,0,0" VerticalAlignment="Top" Width="322" Grid.ColumnSpan="3"/>
 
     </Grid>
