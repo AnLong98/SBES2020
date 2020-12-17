@@ -35,8 +35,8 @@ namespace Client.Managers
         public IClient GetClientProxy(string clientIP, string clientPort)
         {
             NetTcpBinding binding = new NetTcpBinding();
-            ChannelFactory<IClient> channelFactory = new ChannelFactory<IClient>(binding, $"net.tcp://{clientIP}:{clientPort}/Client");
-
+            ChannelFactory<IClient> channelFactory = new ChannelFactory<IClient>(binding, "net.tcp://127.0.0.1:0/Client");
+            channelFactory.Endpoint.Address = new EndpointAddress($"net.tcp://{clientIP}:{clientPort}/Client");
             return channelFactory.CreateChannel();
 
         }

@@ -78,7 +78,7 @@ namespace Client.ViewModels
 
             try
             {
-                messageReceiver.sendMessage(message);
+                messageReceiver.SendMessage(message);
                 Messages += $"\n[{chatUserName}]: " + message;
                 
             }catch(Exception e)

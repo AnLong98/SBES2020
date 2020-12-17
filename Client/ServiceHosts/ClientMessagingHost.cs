@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
+using System.ServiceModel.Discovery;
 using System.ServiceModel.Security;
 using System.Text;
 using System.Windows;
@@ -20,6 +21,8 @@ namespace Client.ServiceHosts
         {
             //binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
             host = new ServiceHost(typeof(MessageReceivingService));
+            //host.Description.Behaviors.Add(new ServiceDiscoveryBehavior());
+            //host.AddServiceEndpoint(new UdpDiscoveryEndpoint());
             host.AddServiceEndpoint(typeof(IClient), binding, address);
             host.Description.Endpoints[0].ListenUriMode = System.ServiceModel.Description.ListenUriMode.Unique;
 

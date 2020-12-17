@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Parsers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -14,7 +15,8 @@ namespace Service
         {
             IIdentity identity = Thread.CurrentPrincipal.Identity;
             WindowsIdentity windowsIdentity = identity as WindowsIdentity;
-            string userName = windowsIdentity.Name;
+            string userName = WinLogonNameParser.ParseName( windowsIdentity.Name);
+
 
             if (!Users.UserAccounts.ContainsKey(userName))
                 Users.UserAccounts.Add(userName, new User(ip, port, userName));

@@ -1,20 +1,13 @@
 ﻿using Client.Commands;
 using Client.Managers;
 using Client.ViewModels;
+using Common.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Principal;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace Client
 {
@@ -25,7 +18,8 @@ namespace Client
     {
         public MainWindow()
         {
-            MainWindowViewModel vm = new MainWindowViewModel(new ConnectionManager(), new ServiceHosts.ClientMessagingHost());
+            string currentUser = WinLogonNameParser.ParseName(WindowsIdentity.GetCurrent().Name);
+            MainWindowViewModel vm = new MainWindowViewModel(new ConnectionManager(), new ServiceHosts.ClientMessagingHost(), currentUser);
             vm.RevocateCertificateCommand = new RevocateCertificateCommand(vm);
             vm.StartChatCommand= new StartChatCommand(vm);
             DataContext = vm;

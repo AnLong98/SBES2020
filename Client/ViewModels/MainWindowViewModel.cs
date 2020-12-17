@@ -1,6 +1,7 @@
 ﻿using Client.Contracts;
 using Client.Managers;
 using Client.ServiceHosts;
+using Common.Parsers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,12 +28,12 @@ namespace Client.ViewModels
         #endregion
 
         #region CTOR and Startup
-        public MainWindowViewModel(IConnectionManager connectionManager, ClientMessagingHost host)
+        public MainWindowViewModel(IConnectionManager connectionManager, ClientMessagingHost host, string currentUserName)
         {
             this.connectionManager = connectionManager;
             authServerProxy = connectionManager.GetAuthServerProxy();
             this.host = host;
-            currentUserName = WindowsIdentity.GetCurrent().Name;
+            this.currentUserName = this.currentUserName = currentUserName; 
             new Task(StartUp).Start();
         }
 
@@ -158,7 +159,16 @@ namespace Client.ViewModels
         #region Start Chat
         public void StartChat(User user)
         {
-            ChatWindowManager.CreateNewForInitiating(user.Username, currentUserName, connectionManager.GetClientProxy(user.Ip, user.Port));
+            try
+            {
+                IClient clientProxy = connectionManager.GetClientProxy(user.Ip, user.Port);
+                clientProxy.SendCommunicationRequest(host.GetIP(), host.GetPort().ToString());
+                ChatWindowManager.CreateNewChatWindow(user.Username, currentUserName, clientProxy);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error occured contacting client");
+            }
         }
         #endregion
 
