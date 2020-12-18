@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Client.Commands;
+using Client.Contracts;
+using Client.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,19 +13,22 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client
+namespace Client.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ChatWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ChatWindow : Window, ICloseable
     {
-        public MainWindow()
+        public ChatWindow(ChatWindowViewModel viewModel)
         {
+            viewModel.SendMessageCommand = new SendMessageCommand(viewModel);
+            viewModel.WindowContext = this;
+            DataContext = viewModel;
             InitializeComponent();
         }
+
     }
 }
