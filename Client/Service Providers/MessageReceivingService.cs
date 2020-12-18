@@ -1,4 +1,5 @@
-﻿using Client.Managers;
+﻿using AESSecurity;
+using Client.Managers;
 using Common.Parsers;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace Client.Service_Providers
             {
                 //TODO: Change this awful code and architecture to something better
                 ConnectionManager connManager = new ConnectionManager();
-                ChatWindowManager.CreateNewChatWindow(sender, currentUser, connManager.GetClientProxy(ownIP, port), connManager.GetMonitorProxy());
+                AESCryptographyProvider cryptographyProvider = new AESCryptographyProvider();
+                ChatWindowManager.CreateNewChatWindow(sender, currentUser, connManager.GetClientProxy(ownIP, port), connManager.GetMonitorProxy(), cryptographyProvider);
             }
         }
 

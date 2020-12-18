@@ -1,4 +1,5 @@
-﻿using Client.Commands;
+﻿using AESSecurity;
+using Client.Commands;
 using Client.Managers;
 using Client.ViewModels;
 using Common.Parsers;
@@ -19,7 +20,7 @@ namespace Client
         public MainWindow()
         {
             string currentUser = WinLogonNameParser.ParseName(WindowsIdentity.GetCurrent().Name);
-            MainWindowViewModel vm = new MainWindowViewModel(new ConnectionManager(), new ServiceHosts.ClientMessagingHost(), currentUser);
+            MainWindowViewModel vm = new MainWindowViewModel(new ConnectionManager(), new ServiceHosts.ClientMessagingHost(), currentUser, new AESCryptographyProvider());
             vm.RevocateCertificateCommand = new RevocateCertificateCommand(vm);
             vm.StartChatCommand= new StartChatCommand(vm);
             DataContext = vm;

@@ -14,9 +14,9 @@ namespace Client.Managers
     public static class ChatWindowManager
     {
         private static readonly object lockCreate = new object();
-        public static void CreateNewChatWindow(string chatPeerUsername, string currentUser, IClient peerProxy, IMonitoringServer monitoring)
+        public static void CreateNewChatWindow(string chatPeerUsername, string currentUser, IClient peerProxy, IMonitoringServer monitoring, IAESSecurity security)
         {
-            ChatWindowViewModel viewModel = new ChatWindowViewModel(currentUser, chatPeerUsername,peerProxy, monitoring);
+            ChatWindowViewModel viewModel = new ChatWindowViewModel(currentUser, chatPeerUsername,peerProxy, monitoring, security);
             MessageNotificationManager.Instance().AddReceiver(viewModel, chatPeerUsername);
             lock (lockCreate)
             {

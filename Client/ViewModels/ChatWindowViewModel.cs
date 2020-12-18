@@ -24,13 +24,14 @@ namespace Client.ViewModels
         #endregion
 
         #region CTOR
-        public ChatWindowViewModel(string chatUserName, string chatPeerUserName, IClient peerProxy, IMonitoringServer monitoringServerProxy)
+        public ChatWindowViewModel(string chatUserName, string chatPeerUserName, IClient peerProxy, IMonitoringServer monitoringServerProxy, IAESSecurity aesSecurity)
         {
             this.chatUserName = chatUserName;
             this.chatPeerUserName = chatPeerUserName;
             this.messageReceiver = peerProxy;
             this.Messages += $"You are now connected to {chatPeerUserName}";
             this.monitoringServerProxy = monitoringServerProxy;
+            this.aesSecurity = aesSecurity;
             //new Task(MockChatting).Start();
         }
         #endregion
@@ -92,8 +93,8 @@ namespace Client.ViewModels
 
         public void SendMessage(string message)
         {
-            string key = ""; //Get key somehow
-            //string encryptedMessage = aesSecurity.Encrypt(message, key);
+            string key = "?????t?Zr.?\u007f???&$?\u0016?>|?\a\vAX??\0'{"; //Get key somehow, harcdoded for now!!!!!
+            string encryptedMessage = aesSecurity.Encrypt(message, key);
 
             try
             {

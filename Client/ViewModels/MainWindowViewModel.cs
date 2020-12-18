@@ -24,17 +24,19 @@ namespace Client.ViewModels
         private IConnectionManager connectionManager;
         private ClientMessagingHost host;
         private ICentralAuthServer centralAuthServer;
+        private IAESSecurity security;
         private readonly string currentUserName;
         #endregion
 
         #region CTOR and Startup
-        public MainWindowViewModel(IConnectionManager connectionManager, ClientMessagingHost host, string currentUserName)
+        public MainWindowViewModel(IConnectionManager connectionManager, ClientMessagingHost host, string currentUserName, IAESSecurity security)
         {
             this.connectionManager = connectionManager;
             this.authServerProxy = connectionManager.GetAuthServerProxy();
             this.monitoringServerProxy = connectionManager.GetMonitorProxy();
             this.host = host;
-            this.currentUserName = currentUserName; 
+            this.currentUserName = currentUserName;
+            this.security = security;
             new Task(StartUp).Start();
         }
 
@@ -162,7 +164,7 @@ namespace Client.ViewModels
             {
                 IClient clientProxy = connectionManager.GetClientProxy(user.Ip, user.Port);
                 clientProxy.SendCommunicationRequest(host.GetIP(), host.GetPort().ToString());
-                ChatWindowManager.CreateNewChatWindow(user.Username, currentUserName, clientProxy, monitoringServerProxy);
+                ChatWindowManager.CreateNewChatWindow(user.Username, currentUserName, clientProxy, monitoringServerProxy, security);
             }
             catch (Exception e)
             {
