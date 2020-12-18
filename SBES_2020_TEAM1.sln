@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{6CCC2E29-5EB0-4F79-B101-C157B3CBE0E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AESSecurity", "AESSecurity\AESSecurity.csproj", "{4CBB236C-B598-4280-93DB-D90A2B380344}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AESSecurityTests", "AESSecurityTests\AESSecurityTests.csproj", "{FC897A25-226F-4A6E-A367-099C7BE1D6FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{6CCC2E29-5EB0-4F79-B101-C157B3CBE0E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CCC2E29-5EB0-4F79-B101-C157B3CBE0E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CCC2E29-5EB0-4F79-B101-C157B3CBE0E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CBB236C-B598-4280-93DB-D90A2B380344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CBB236C-B598-4280-93DB-D90A2B380344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CBB236C-B598-4280-93DB-D90A2B380344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CBB236C-B598-4280-93DB-D90A2B380344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC897A25-226F-4A6E-A367-099C7BE1D6FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC897A25-226F-4A6E-A367-099C7BE1D6FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC897A25-226F-4A6E-A367-099C7BE1D6FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC897A25-226F-4A6E-A367-099C7BE1D6FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
