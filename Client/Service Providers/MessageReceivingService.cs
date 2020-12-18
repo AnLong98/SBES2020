@@ -21,7 +21,7 @@ namespace Client.Service_Providers
             {
                 //TODO: Change this awful code and architecture to something better
                 ConnectionManager connManager = new ConnectionManager();
-                ChatWindowManager.CreateNewChatWindow(sender, currentUser, connManager.GetClientProxy(ownIP, port));
+                ChatWindowManager.CreateNewChatWindow(sender, currentUser, connManager.GetClientProxy(ownIP, port), connManager.GetMonitorProxy());
             }
         }
 

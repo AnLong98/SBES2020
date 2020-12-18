@@ -1,4 +1,5 @@
-﻿using Client.ViewModels;
+﻿using Client.Contracts;
+using Client.ViewModels;
 using Client.Views;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,12 @@ namespace Client.Managers
     public static class ChatWindowManager
     {
         private static readonly object lockCreate = new object();
-        public static void CreateNewChatWindow(string chatPeerUsername, string currentUser, IClient peerProxy)
+        public static void CreateNewChatWindow(string chatPeerUsername, string currentUser, IClient peerProxy, IMonitoringServer monitoring)
         {
-            ChatWindowViewModel viewModel = new ChatWindowViewModel(currentUser, chatPeerUsername,peerProxy);
+            ChatWindowViewModel viewModel = new ChatWindowViewModel(currentUser, chatPeerUsername,peerProxy, monitoring);
             MessageNotificationManager.Instance().AddReceiver(viewModel, chatPeerUsername);
             lock (lockCreate)
             {
-
 
                 Thread newChatThread = new Thread(() =>
                 {
@@ -29,8 +29,10 @@ namespace Client.Managers
                         new DispatcherSynchronizationContext(
                             Dispatcher.CurrentDispatcher));
 
-                    ChatWindow tempWindow = new ChatWindow(viewModel);
-                    tempWindow.Title = chatPeerUsername;
+                    ChatWindow tempWindow = new ChatWindow(viewModel)
+                    {
+                        Title = chatPeerUsername
+                    };
                     tempWindow.Closed += (s, e) =>
                         Dispatcher.CurrentDispatcher.BeginInvokeShutdown(DispatcherPriority.Background);
 

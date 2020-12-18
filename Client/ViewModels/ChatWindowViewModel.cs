@@ -21,16 +21,18 @@ namespace Client.ViewModels
         private string chatUserName;
         private string chatPeerUserName;
         private string inputText;
+        #endregion
 
-        public ChatWindowViewModel(string chatUserName, string chatPeerUserName, IClient peerProxy)
+        #region CTOR
+        public ChatWindowViewModel(string chatUserName, string chatPeerUserName, IClient peerProxy, IMonitoringServer monitoringServerProxy)
         {
             this.chatUserName = chatUserName;
             this.chatPeerUserName = chatPeerUserName;
             this.messageReceiver = peerProxy;
             this.Messages += $"You are now connected to {chatPeerUserName}";
+            this.monitoringServerProxy = monitoringServerProxy;
             //new Task(MockChatting).Start();
         }
-
         #endregion
 
         #region  Commands
@@ -49,6 +51,8 @@ namespace Client.ViewModels
         #endregion
 
         #region Get Set
+        public ICloseable WindowContext { get; set; }
+
         public string Messages
         {
             get
@@ -113,13 +117,9 @@ namespace Client.ViewModels
             {
                 monitoringServerProxy.LogCommunicationEnd(chatUserName, chatPeerUserName, DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
             }
-            catch (Exception exp)
-            {
-
-            }
-            finally
-            {
-                Application.Current.MainWindow.Close(); //This potentially violates MVVM and should be looked after
+            catch
+            { 
+                WindowContext.Close(); 
             }
         }
 
@@ -131,7 +131,7 @@ namespace Client.ViewModels
             }
             catch
             {
-                Application.Current.MainWindow.Close(); //This potentially violates MVVM and should be looked after
+                WindowContext.Close();
             }
         }
         #endregion

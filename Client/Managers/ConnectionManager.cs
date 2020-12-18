@@ -28,7 +28,11 @@ namespace Client.Managers
 
         public IMonitoringServer GetMonitorProxy()
         {
-            return null;
+            NetTcpBinding binding = new NetTcpBinding();
+            string address = "net.tcp://localhost:9999/Monitoring";
+
+            ChannelFactory<IMonitoringServer> serverChannel = new ChannelFactory<IMonitoringServer>(binding, address);
+            return serverChannel.CreateChannel();
 
         }
 

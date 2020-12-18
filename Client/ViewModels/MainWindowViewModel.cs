@@ -20,20 +20,21 @@ namespace Client.ViewModels
         #region Fields
         private BindingList<User> users;
         private ICentralAuthServer authServerProxy;
-        private IMonitoringServer monitoringServerProxy;
+        private readonly IMonitoringServer monitoringServerProxy;
         private IConnectionManager connectionManager;
         private ClientMessagingHost host;
         private ICentralAuthServer centralAuthServer;
-        private string currentUserName;
+        private readonly string currentUserName;
         #endregion
 
         #region CTOR and Startup
         public MainWindowViewModel(IConnectionManager connectionManager, ClientMessagingHost host, string currentUserName)
         {
             this.connectionManager = connectionManager;
-            authServerProxy = connectionManager.GetAuthServerProxy();
+            this.authServerProxy = connectionManager.GetAuthServerProxy();
+            this.monitoringServerProxy = connectionManager.GetMonitorProxy();
             this.host = host;
-            this.currentUserName = this.currentUserName = currentUserName; 
+            this.currentUserName = currentUserName; 
             new Task(StartUp).Start();
         }
 
@@ -129,9 +130,7 @@ namespace Client.ViewModels
             {
                 try
                 {
-                    List<User> allUsers = authServerProxy.GetAllUsers();
-                    if (allUsers.Count == 0) return new BindingList<User>();
-                    return new BindingList<User>(allUsers);
+                    return new BindingList<User>(authServerProxy.GetAllUsers());
                 }
                 catch (Exception e)
                 {
@@ -163,7 +162,7 @@ namespace Client.ViewModels
             {
                 IClient clientProxy = connectionManager.GetClientProxy(user.Ip, user.Port);
                 clientProxy.SendCommunicationRequest(host.GetIP(), host.GetPort().ToString());
-                ChatWindowManager.CreateNewChatWindow(user.Username, currentUserName, clientProxy);
+                ChatWindowManager.CreateNewChatWindow(user.Username, currentUserName, clientProxy, monitoringServerProxy);
             }
             catch (Exception e)
             {

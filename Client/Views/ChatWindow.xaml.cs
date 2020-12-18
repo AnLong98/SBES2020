@@ -20,11 +20,12 @@ namespace Client.Views
     /// <summary>
     /// Interaction logic for ChatWindow.xaml
     /// </summary>
-    public partial class ChatWindow : Window
+    public partial class ChatWindow : Window, ICloseable
     {
         public ChatWindow(ChatWindowViewModel viewModel)
         {
             viewModel.SendMessageCommand = new SendMessageCommand(viewModel);
+            viewModel.WindowContext = this;
             DataContext = viewModel;
             InitializeComponent();
         }
