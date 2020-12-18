@@ -12,58 +12,41 @@ namespace AESSecurity
     {
         public string Decrypt(string cyphertext, string key)
         {
-            byte[] encryptedByteArray = Convert.FromBase64String(cyphertext);
-            byte[] decryptedByteArray = null;
-
-            AesCryptoServiceProvider aesCryptoProvider = new AesCryptoServiceProvider
+            var bytes = Convert.FromBase64String(cyphertext);
+            byte[] keyBytes = ASCIIEncoding.ASCII.GetBytes(key);
+            var aes = new AesCryptoServiceProvider();
+            using (var memStream = new System.IO.MemoryStream(bytes))
             {
-                Key = Encoding.UTF8.GetBytes(key),
-                Mode = CipherMode.CBC,
-                Padding = PaddingMode.None
-            };
-
-            aesCryptoProvider.IV = encryptedByteArray.Take(aesCryptoProvider.BlockSize / 8).ToArray();
-
-            ICryptoTransform cryptoTransform = aesCryptoProvider.CreateDecryptor();
-
-            using (MemoryStream memoryStream = new MemoryStream(encryptedByteArray.Skip(aesCryptoProvider.BlockSize / 8).ToArray()))
-            {
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoTransform, CryptoStreamMode.Read))
+                var iv = new byte[16];
+                memStream.Read(iv, 0, 16);  // Pull the IV from the first 16 bytes of the encrypted value
+                using (var cryptStream = new CryptoStream(memStream, aes.CreateDecryptor(keyBytes, iv), CryptoStreamMode.Read))
                 {
-                    decryptedByteArray = new byte[encryptedByteArray.Length - aesCryptoProvider.BlockSize / 8];
-                    cryptoStream.Read(decryptedByteArray, 0, decryptedByteArray.Length);
+                    using (var reader = new System.IO.StreamReader(cryptStream))
+                    {
+                        return reader.ReadToEnd();
+                    }
                 }
             }
-
-            return Convert.ToBase64String(decryptedByteArray);
         }
 
         public string Encrypt(string plaintext, string key)
         {
-            byte[] encryptedByteArray;
-            byte[] plaintextByteArray = Convert.FromBase64String(plaintext);
-
-            AesCryptoServiceProvider aesCryptoProvider = new AesCryptoServiceProvider
+            var aes = new AesCryptoServiceProvider();
+            var iv = aes.IV;
+            byte[] keyBytes = ASCIIEncoding.ASCII.GetBytes(key);
+            using (var memStream = new System.IO.MemoryStream())
             {
-                Key = Encoding.UTF8.GetBytes(key),
-                Mode = CipherMode.CBC,
-                Padding = PaddingMode.None
-            };
-
-            aesCryptoProvider.GenerateIV(); //create init vector at random
-
-            ICryptoTransform cryptoTransform = aesCryptoProvider.CreateEncryptor();
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoTransform, CryptoStreamMode.Write))
+                memStream.Write(iv, 0, iv.Length);  // Add the IV to the first 16 bytes of the encrypted value
+                using (var cryptStream = new CryptoStream(memStream, aes.CreateEncryptor(keyBytes, aes.IV), CryptoStreamMode.Write))
                 {
-                    cryptoStream.Write(plaintextByteArray, 0, plaintext.Length);
-                    encryptedByteArray = aesCryptoProvider.IV.Concat(memoryStream.ToArray()).ToArray();    //encrypted image body with IV
+                    using (var writer = new System.IO.StreamWriter(cryptStream))
+                    {
+                        writer.Write(plaintext);
+                    }
                 }
+                var buf = memStream.ToArray();
+                return Convert.ToBase64String(buf, 0, buf.Length);
             }
-
-            return Convert.ToBase64String(encryptedByteArray);
         }
     }
 }
