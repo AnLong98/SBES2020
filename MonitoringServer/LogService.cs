@@ -10,7 +10,10 @@ namespace MonitoringServer
     {
         public void LogCommunication(string sender, string receiver, string timestamp, string message)
         {
-            throw new NotImplementedException();
+            string log = "";
+            log = $"[{timestamp}]\tsender: {sender}\treceiver: {receiver}\tmessage: \"{message}\"";
+            MessageLogger.LoggMessage(log);
+
         }
 
         public void LogCommunicationEnd(string sender, string receiver, string timestamp)

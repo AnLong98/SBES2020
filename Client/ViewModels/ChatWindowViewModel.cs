@@ -107,7 +107,7 @@ namespace Client.ViewModels
                 MessageBox.Show("Message couldn't be sent!");
                 //LogCommunicationEnd();
             }
-            //LogCommunication(encryptedMessage);
+            LogCommunication(encryptedMessage);
         }
         #endregion
 

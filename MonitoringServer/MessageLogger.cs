@@ -9,18 +9,19 @@ namespace MonitoringServer
 {
     public class MessageLogger
     {
+        static readonly object syncObject = new object();
+
         public static void LoggMessage(string s)
         {
-            string path = System.IO.Path.GetFullPath("../../Messages/messages.txt");
-            FileStream stream = new FileStream(path, FileMode.Create);
-            StreamWriter sw = new StreamWriter(stream);
-
-            sw.WriteLine(s);
-
-            sw.Close();
-            stream.Close();
-
+            lock (syncObject)
+            {
+                using (StreamWriter sw = File.AppendText(System.IO.Path.GetFullPath("../../Messages/messages.txt")))
+                {
+                    sw.WriteLine(s);
+                }
+            }
         }
         
+
     }
 }
