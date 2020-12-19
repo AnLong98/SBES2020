@@ -23,21 +23,21 @@ public class User {
 
 	}
 
-    public User(string ip, string port, string username)
-    {
-        this.ip = ip;
-        this.port = port;
-        this.username = username;
-    }
+	public User(string ip, string port, string username)
+	{
+		this.ip = ip;
+		this.port = port;
+		this.username = username;
+	}
 
-    ~User(){
+	~User(){
 
 	}
 
-    [DataMember]
-    public string Ip { get => ip; set => ip = value; }
-    [DataMember]
-    public string Port { get => port; set => port = value; }
-    [DataMember]
-    public string Username { get => username; set => username = value; }
+	[DataMember]
+	public string Ip { get => ip; set => ip = value; }
+	[DataMember]
+	public string Port { get => port; set => port = value; }
+	[DataMember]
+	public string Username { get => username; set => username = value; }
 }//end User
