@@ -13,7 +13,7 @@ namespace MonitoringServer
         {
             NetTcpBinding binding = new NetTcpBinding();
             string address = "net.tcp://localhost:9999/Monitoring";
-            ServiceHost host = new ServiceHost(typeof(LogService));
+            ServiceHost host = new ServiceHost(typeof(MonitoringServiceProvider));
             host.AddServiceEndpoint(typeof(IMonitoringServer), binding, address);
             
             try

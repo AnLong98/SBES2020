@@ -44,7 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogService.cs" />
+    <Compile Include="EventLogger\Audit.cs" />
+    <Compile Include="EventLogger\AuditEventFile.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuditEventFile.resx</DependentUpon>
+    </Compile>
+    <Compile Include="EventLogger\AuditEvents.cs" />
+    <Compile Include="MonitoringServiceProvider.cs" />
     <Compile Include="MessageLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,9 +65,17 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="EventLogger\AuditEventFile.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuditEventFile.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Messages\messages.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EncryptedMessageLogger\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
