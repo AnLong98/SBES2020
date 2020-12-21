@@ -1,4 +1,5 @@
-﻿using MonitoringServer.EventLogger;
+﻿using MonitoringServer.EncryptedMessageLogger;
+using MonitoringServer.EventLogger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,11 @@ namespace MonitoringServer
     {
         public void LogCommunication(string sender, string receiver, string timestamp, string message)
         {
-            // pozvati metodu koja ce mi vratiti odgovarajuci kljuc: 
-            // posaljem joj sender, ona nadje fajl koji se zove sender, procita ga i vrati to (key)
-            // ako ne postoji vratiti gresku o tome throw new FileNotFoundException
-            // ovde ga uhvatiti, ako ne bude htelo => onda ga vatati tamo gde citam...
-            
-            // pozvati ovu metodu u najobicnijem try-catch bloku(Exception e)
-            // pozovem: Encrypt(message, key)
+            // encrypt...
 
             string log = "";
             log = $"[{timestamp}]\tsender: {sender}\treceiver: {receiver}\tmessage: \"{message}\"";
-            //MessageLogger.LoggMessage(log);
+            MessageLogger.LoggMessage(log);
 
         }
 

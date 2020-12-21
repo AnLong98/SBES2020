@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonitoringServer
+namespace MonitoringServer.EncryptedMessageLogger
 {
     public class MessageLogger
     {
