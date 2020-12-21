@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EncryptedMessageLogger\MessageLogger.cs" />
     <Compile Include="EventLogger\Audit.cs" />
     <Compile Include="EventLogger\AuditEventFile.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -52,7 +53,6 @@
     </Compile>
     <Compile Include="EventLogger\AuditEvents.cs" />
     <Compile Include="MonitoringServiceProvider.cs" />
-    <Compile Include="MessageLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -72,10 +72,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Messages\messages.txt" />
+    <Content Include="EncryptedMessageLogger\Messages\messages.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EncryptedMessageLogger\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

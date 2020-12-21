@@ -21,7 +21,7 @@ namespace MonitoringServer
 
             string log = "";
             log = $"[{timestamp}]\tsender: {sender}\treceiver: {receiver}\tmessage: \"{message}\"";
-            MessageLogger.LoggMessage(log);
+            //MessageLogger.LoggMessage(log);
 
         }
 
