@@ -15,7 +15,7 @@ namespace MonitoringServer.EncryptedMessageLogger
         {
             lock (syncObject)
             {
-                using (StreamWriter sw = File.AppendText(System.IO.Path.GetFullPath("../../EncryptedMessageLogger/Messages/messages.txt")))
+                using (StreamWriter sw = File.AppendText(Path.GetFullPath("../../EncryptedMessageLogger/Messages/messages.txt")))
                 {
                     sw.WriteLine(s);
                 }

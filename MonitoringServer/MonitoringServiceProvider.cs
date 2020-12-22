@@ -1,5 +1,6 @@
 ﻿using MonitoringServer.EncryptedMessageLogger;
 using MonitoringServer.EventLogger;
+using AESSecurity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,14 @@ namespace MonitoringServer
     {
         public void LogCommunication(string sender, string receiver, string timestamp, string message)
         {
-            // encrypt...
+            string key = "";
+            key = FindingTheKey.GetKey(sender);
+
+            string encrypt_message = "";
+            //encrypt_message = Encrypt(message, key);  // ne vidim metodu, trebalo bi da bude static
 
             string log = "";
-            log = $"[{timestamp}]\tsender: {sender}\treceiver: {receiver}\tmessage: \"{message}\"";
+            log = $"[{timestamp}]\tsender: {sender}\treceiver: {receiver}\tmessage: \"{encrypt_message}\"";
             MessageLogger.LoggMessage(log);
 
         }
