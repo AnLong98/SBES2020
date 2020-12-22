@@ -20,9 +20,12 @@ namespace Common.KeyManager
             {
                 lock (syncObject)
                 {
-                    using (StreamReader reader = File.OpenText(Path.GetFullPath(path)))
+                    using (FileStream fInput = new FileStream(path, FileMode.Open, FileAccess.Read))
                     {
-                        key = reader.ReadToEnd();
+                        byte[] buffer = new byte[(int)fInput.Length];
+                        fInput.Read(buffer, 0, (int)fInput.Length);
+                        key = ASCIIEncoding.ASCII.GetString(buffer);
+
                     }
                 }
 

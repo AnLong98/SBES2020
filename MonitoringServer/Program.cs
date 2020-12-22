@@ -19,7 +19,7 @@ namespace MonitoringServer
 
             ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
             newAudit.AuditLogLocation = AuditLogLocation.Application;
-            newAudit.ServiceAuthorizationAuditLevel = AuditLevel.Success;
+            newAudit.ServiceAuthorizationAuditLevel = AuditLevel.SuccessOrFailure;
 
             host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
             host.Description.Behaviors.Add(newAudit);
