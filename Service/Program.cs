@@ -12,7 +12,7 @@ namespace Service
         static void Main(string[] args)
         {
             NetTcpBinding binding = new NetTcpBinding();
-            string address = "net.tcp://localhost:9999/Service";
+            string address = "net.tcp://localhost:9998/Service";
 
             binding.Security.Mode = SecurityMode.Transport;
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;

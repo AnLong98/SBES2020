@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EncryptedMessageLogger\FindingTheKey.cs" />
     <Compile Include="EncryptedMessageLogger\MessageLogger.cs" />
     <Compile Include="EventLogger\Audit.cs" />
     <Compile Include="EventLogger\AuditEventFile.Designer.cs">

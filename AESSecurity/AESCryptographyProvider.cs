@@ -15,6 +15,7 @@ namespace AESSecurity
             var bytes = Convert.FromBase64String(cyphertext);
             byte[] keyBytes = ASCIIEncoding.ASCII.GetBytes(key);
             var aes = new AesCryptoServiceProvider();
+            //aes.Padding = PaddingMode.PKCS7;
             using (var memStream = new System.IO.MemoryStream(bytes))
             {
                 var iv = new byte[16];
@@ -34,6 +35,7 @@ namespace AESSecurity
             var aes = new AesCryptoServiceProvider();
             var iv = aes.IV;
             byte[] keyBytes = ASCIIEncoding.ASCII.GetBytes(key);
+            //aes.Padding = PaddingMode.PKCS7;
             using (var memStream = new System.IO.MemoryStream())
             {
                 memStream.Write(iv, 0, iv.Length);  // Add the IV to the first 16 bytes of the encrypted value

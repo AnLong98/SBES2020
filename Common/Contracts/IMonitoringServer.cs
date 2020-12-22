@@ -28,12 +28,12 @@ public interface IMonitoringServer  {
     /// <param name="receiver"></param>
     /// <param name="timestamp"></param>
     [OperationContract]
-    void LogCommunicationEnd(string sender, string receiver, string timestamp);
+    void LogCommunicationEnd(string sender, string receiver);
 
     /// 
     /// <param name="sender"></param>
     /// <param name="receiver"></param>
     /// <param name="timestamp"></param>
     [OperationContract]
-    void LogCommunicationStart(string sender, string receiver, string timestamp);
+    void LogCommunicationStart(string sender, string receiver);
 }//end IMonitoringServer

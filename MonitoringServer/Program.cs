@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,13 @@ namespace MonitoringServer
             string address = "net.tcp://localhost:9999/Monitoring";
             ServiceHost host = new ServiceHost(typeof(MonitoringServiceProvider));
             host.AddServiceEndpoint(typeof(IMonitoringServer), binding, address);
+
+            ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
+            newAudit.AuditLogLocation = AuditLogLocation.Application;
+            newAudit.ServiceAuthorizationAuditLevel = AuditLevel.Success;
+
+            host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
+            host.Description.Behaviors.Add(newAudit);
             
             try
             {

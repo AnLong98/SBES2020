@@ -105,7 +105,7 @@ namespace Client.ViewModels
             }catch(Exception e)
             {
                 MessageBox.Show("Message couldn't be sent!");
-                //LogCommunicationEnd();
+                LogCommunicationEnd();
             }
             LogCommunication(encryptedMessage);
         }
@@ -116,7 +116,7 @@ namespace Client.ViewModels
         {
             try
             {
-                monitoringServerProxy.LogCommunicationEnd(chatUserName, chatPeerUserName, DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+                monitoringServerProxy.LogCommunicationEnd(chatUserName, chatPeerUserName);
             }
             catch
             { 

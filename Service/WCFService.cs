@@ -13,6 +13,7 @@ namespace Service
     {
         public void Authenticate(string ip, string port)
         {
+            
             IIdentity identity = Thread.CurrentPrincipal.Identity;
             WindowsIdentity windowsIdentity = identity as WindowsIdentity;
             string userName = WinLogonNameParser.ParseName( windowsIdentity.Name);
@@ -20,6 +21,7 @@ namespace Service
 
             if (!Users.UserAccounts.ContainsKey(userName))
                 Users.UserAccounts.Add(userName, new User(ip, port, userName));
+            
         }
 
         public List<User> GetAllUsers()

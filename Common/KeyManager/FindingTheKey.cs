@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonitoringServer.EncryptedMessageLogger
+namespace Common.KeyManager
 {
     public class FindingTheKey
     {
         static readonly object syncObject = new object();
 
-        public static string GetKey(string sender)
+        public string GetKey(string sender)
         {
-            string path = "..." + sender + ".txt";  // dodati putanju do fajla gde se cuvaju AES lozinke klijenata (lozinka se cuva u .txt fajlu naziva odgovarajuceg klijenta)
+            string path = "../../../Service/Certificates/" + sender + "/" + sender + "_key.txt";  //  Service/Certificates/sender/sender_key.txt
             string key = "";
 
             try

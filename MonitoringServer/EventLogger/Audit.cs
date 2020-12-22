@@ -10,7 +10,7 @@ namespace MonitoringServer.EventLogger
     public class Audit : IDisposable
     {
         private static EventLog customLog = null;
-        const string SourceName = "MonitoringServer.Audit";
+        const string SourceName = "MonitoringServer.EventLogger.Audit";
         const string LogName = "Inter-Client Communication";
 
         static Audit()
@@ -50,7 +50,7 @@ namespace MonitoringServer.EventLogger
 
         public static void CommunicationEnd(string client1, string client2)
         {
-            string message = AuditEvents.CommunicationStart;
+            string message = AuditEvents.CommunicationEnd;
             if (customLog != null)
             {
                 string complete_message = String.Format(message, client1, client2);
