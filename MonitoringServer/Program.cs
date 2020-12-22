@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Text;
@@ -12,6 +13,7 @@ namespace MonitoringServer
     {
         static void Main(string[] args)
         {
+            MockKeyStore(); //Comment out later
             NetTcpBinding binding = new NetTcpBinding();
             string address = "net.tcp://localhost:9999/Monitoring";
             ServiceHost host = new ServiceHost(typeof(MonitoringServiceProvider));
@@ -41,6 +43,13 @@ namespace MonitoringServer
             }
 
 
+        }
+
+        static void MockKeyStore()
+        {
+
+            Common.KeyManager.SecretKeyHandler handler = new Common.KeyManager.SecretKeyHandler();
+            handler.StoreKey("predrag", ASCIIEncoding.ASCII.GetString(AesCryptoServiceProvider.Create().Key));
         }
     }
 }

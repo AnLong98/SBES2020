@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Common.KeyManager
 {
-    public class FindingTheKey
+    public class SecretKeyHandler
     {
         static readonly object syncObject = new object();
 
         public string GetKey(string sender)
         {
-            string path = "../../../Service/Certificates/" + sender + "/" + sender + "_key.txt";  //  Service/Certificates/sender/sender_key.txt
+            string path = sender + "_key.txt";  //  sender_key.txt
             string key = "";
 
             try
@@ -38,11 +38,38 @@ namespace Common.KeyManager
             {
                 Console.WriteLine(e.Message);
             }
-            
+
             return key;
 
         }
 
 
+        public void StoreKey(string keyOwner, string key)
+        {
+            string path = keyOwner + "_key.txt";  //  sender_key.txt
+
+            try
+            {
+                lock (syncObject)
+                {
+                    using (FileStream fOut = new FileStream(path, FileMode.Create, FileAccess.Write))
+                    {
+                        byte[] buffer = Encoding.ASCII.GetBytes(key);
+                        fOut.Write(buffer, 0, buffer.Length);
+                    }
+                }
+
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+        }
     }
 }
+

@@ -15,7 +15,7 @@ namespace MonitoringServer
         public void LogCommunication(string sender, string receiver, string timestamp, string message)
         {
             string key = "";
-            FindingTheKey find = new FindingTheKey();
+            SecretKeyHandler find = new SecretKeyHandler();
             key = find.GetKey(sender);
 
             string decrypted_message = "";

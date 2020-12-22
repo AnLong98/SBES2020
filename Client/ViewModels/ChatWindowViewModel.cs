@@ -1,4 +1,5 @@
 ﻿using Client.Contracts;
+using Common.KeyManager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +22,7 @@ namespace Client.ViewModels
         private string chatUserName;
         private string chatPeerUserName;
         private string inputText;
+        private SecretKeyHandler keyHandler;
         #endregion
 
         #region CTOR
@@ -32,6 +34,7 @@ namespace Client.ViewModels
             this.Messages += $"You are now connected to {chatPeerUserName}";
             this.monitoringServerProxy = monitoringServerProxy;
             this.aesSecurity = aesSecurity;
+            this.keyHandler = new SecretKeyHandler(); //RIP dependency injection
             //new Task(MockChatting).Start();
         }
         #endregion
@@ -93,7 +96,7 @@ namespace Client.ViewModels
 
         public void SendMessage(string message)
         {
-            string key = "?????t?Zr.?\u007f???&$?\u0016?>|?\a\vAX??\0'{"; //Get key somehow, harcdoded for now!!!!!
+            string key = keyHandler.GetKey(chatUserName);
             string encryptedMessage = aesSecurity.Encrypt(message, key);
 
             try

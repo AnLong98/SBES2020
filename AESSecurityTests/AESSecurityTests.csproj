@@ -59,6 +59,10 @@
       <Project>{4cbb236c-b598-4280-93db-d90a2b380344}</Project>
       <Name>AESSecurity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{6ccc2e29-5eb0-4f79-b101-c157b3cbe0e1}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
