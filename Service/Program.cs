@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Certificate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -24,6 +25,8 @@ namespace Service
             host.Open();
 
             Console.WriteLine("Servis je pokrenut.");
+
+            CertificateManager.CreateCertificate("StefanDjurovic");
 
             Console.ReadLine();
         }

@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Certificate\CertificateManager.cs" />
     <Compile Include="Contracts\IAESSecurity.cs" />
     <Compile Include="Contracts\ICentralAuthServer.cs" />
     <Compile Include="Contracts\IClient.cs" />
