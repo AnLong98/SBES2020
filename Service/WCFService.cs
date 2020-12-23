@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common;
+using Common.Certificate;
 using Common.Parsers;
 
 namespace Service
@@ -18,8 +21,18 @@ namespace Service
             WindowsIdentity windowsIdentity = identity as WindowsIdentity;
             string userName = WinLogonNameParser.ParseName(windowsIdentity.Name);
 
+            // add new user to user list
             if (!Users.UserAccounts.ContainsKey(userName))
+            {
                 Users.UserAccounts.Add(userName, new User(ip, port, userName));
+
+                var privKey = CertificateManager.GenerateCACertificate("CN=CentralServerCA");
+                var cert = CertificateManager.GenerateSelfSignedCertificate($"CN={userName}", "CN=CentralServerCA", privKey);
+
+                string outCertPath = $"../../UserCeritifactes/{userName}";
+                System.IO.Directory.CreateDirectory(Path.GetFullPath(outCertPath));
+                File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.cer"), cert.Export(X509ContentType.Cert));
+            }
         }
 
         public List<User> GetAllUsers()
