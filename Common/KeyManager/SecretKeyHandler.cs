@@ -71,16 +71,6 @@ namespace Common.KeyManager
             }
 
         }
-
-        public string GenerateKey()
-        {
-             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
-             aes.GenerateIV();
-             aes.GenerateKey();
-             return ASCIIEncoding.ASCII.GetString(aes.Key);
-
-            //return ASCIIEncoding.ASCII.GetString(AesCryptoServiceProvider.Create().Key);
-        }
     }
 }
 

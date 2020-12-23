@@ -20,7 +20,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.Certificate
+namespace Service.Certificate
 {
     public static class CertificateManager
     {

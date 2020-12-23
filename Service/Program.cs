@@ -1,5 +1,4 @@
-﻿using Common.Certificate;
-using Common.KeyManager;
+﻿using Common.KeyManager;
 using System;
 using System.Collections.Generic;
 using System.IO;

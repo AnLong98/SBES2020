@@ -9,9 +9,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common;
-using Common.Certificate;
 using Common.Parsers;
 using Common.KeyManager;
+using Service.Certificate;
+using Service.GenerateKey;
 
 namespace Service
 {
@@ -37,7 +38,7 @@ namespace Service
                 File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.cer"), cert.Export(X509ContentType.Cert));
 
                 SecretKeyHandler skh = new SecretKeyHandler();
-                string key = skh.GenerateKey();
+                string key = Generate.KeyGenerator();
                 skh.StoreKey(userName, key);
 
             }
