@@ -1,11 +1,16 @@
 ﻿using Common.Parsers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Common;
+using Common.Certificate;
+using Common.Parsers;
 
 namespace Service
 {
@@ -16,17 +21,38 @@ namespace Service
             
             IIdentity identity = Thread.CurrentPrincipal.Identity;
             WindowsIdentity windowsIdentity = identity as WindowsIdentity;
-            string userName = WinLogonNameParser.ParseName( windowsIdentity.Name);
+            string userName = WinLogonNameParser.ParseName(windowsIdentity.Name);
 
-
+            // add new user to user list
             if (!Users.UserAccounts.ContainsKey(userName))
+            {
                 Users.UserAccounts.Add(userName, new User(ip, port, userName));
-            
+
+                var privKey = CertificateManager.GenerateCACertificate("CN=CentralServerCA");
+                var cert = CertificateManager.GenerateSelfSignedCertificate($"CN={userName}", "CN=CentralServerCA", privKey);
+
+                string outCertPath = $"../../UserCeritifactes/{userName}";
+                System.IO.Directory.CreateDirectory(Path.GetFullPath(outCertPath));
+                File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.cer"), cert.Export(X509ContentType.Cert));
+            }
         }
 
         public List<User> GetAllUsers()
         {
-            return Users.UserAccounts.Values.ToList();
+            List<User> users = new List<User>();
+            IIdentity id = Thread.CurrentPrincipal.Identity;
+            WindowsIdentity winId = id as WindowsIdentity;
+            string userName = WinLogonNameParser.ParseName(winId.Name);
+
+            foreach(KeyValuePair<string, User> kp in Users.UserAccounts) 
+            {
+                if(!kp.Key.Equals(userName)) //added all clients to the list / except the client we are sending this list to.
+                {
+                    users.Add(kp.Value);
+                }
+            }
+
+            return users;
         }
 
         public void RevocateCertificate()

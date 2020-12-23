@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Common.Certificate;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,8 +26,7 @@ namespace Service
 
             host.Open();
 
-            Console.WriteLine("Servis je pokrenut.");
-
+            Console.WriteLine("Servis je pokrenut.");     
             Console.ReadLine();
         }
     }
