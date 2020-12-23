@@ -22,7 +22,6 @@ namespace Common.Certificate
             //string fileName = Path.ChangeExtension(Path.GetTempFileName(), "cer");
             string fileName = Path.ChangeExtension(@"C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x64\" +userName, "cer");
             //string userName = Guid.NewGuid().ToString();
-
             /// if -sk is used instead of -sv, we don't get any password popup
             string arguments = 
                 string.Format("-sv {0}.pvk -iv CentralServerCA.pvk -n \"CN={0}\" -pe -ic CentralServerCA.cer {0}.cer -sr localmachine -ss My -sky exchange",
