@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -69,6 +70,16 @@ namespace Common.KeyManager
                 Console.WriteLine(e.Message);
             }
 
+        }
+
+        public string GenerateKey()
+        {
+             AesCryptoServiceProvider aes = new AesCryptoServiceProvider();
+             aes.GenerateIV();
+             aes.GenerateKey();
+             return ASCIIEncoding.ASCII.GetString(aes.Key);
+
+            //return ASCIIEncoding.ASCII.GetString(AesCryptoServiceProvider.Create().Key);
         }
     }
 }

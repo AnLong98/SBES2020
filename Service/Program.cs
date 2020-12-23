@@ -1,4 +1,5 @@
 ﻿using Common.Certificate;
+using Common.KeyManager;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,7 @@ namespace Service
 
             host.Open();
 
-            Console.WriteLine("Servis je pokrenut.");     
+            Console.WriteLine("Servis je pokrenut.");
             Console.ReadLine();
         }
     }

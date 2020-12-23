@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Common;
 using Common.Certificate;
 using Common.Parsers;
+using Common.KeyManager;
 
 namespace Service
 {
@@ -34,6 +35,11 @@ namespace Service
                 string outCertPath = $"../../UserCeritifactes/{userName}";
                 System.IO.Directory.CreateDirectory(Path.GetFullPath(outCertPath));
                 File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.cer"), cert.Export(X509ContentType.Cert));
+
+                SecretKeyHandler skh = new SecretKeyHandler();
+                string key = skh.GenerateKey();
+                skh.StoreKey(userName, key);
+
             }
         }
 
