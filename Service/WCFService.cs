@@ -13,6 +13,7 @@ using Common.Parsers;
 using Common.KeyManager;
 using Service.Certificate;
 using Service.GenerateKey;
+using Service.CMSWindowsEventLog;
 
 namespace Service
 {
@@ -41,6 +42,8 @@ namespace Service
                 string key = Generate.KeyGenerator();
                 skh.StoreKey(userName, key);
 
+                Audit.CreateCertificateAndKey(userName);
+
             }
         }
 
@@ -64,6 +67,7 @@ namespace Service
 
         public void RevocateCertificate()
         {
+            //Audit.CertificateRevocated(userName);
             throw new NotImplementedException();
         }
     }

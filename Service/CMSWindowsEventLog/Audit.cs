@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonitoringServer.EventLogger
+namespace Service.CMSWindowsEventLog
 {
     public class Audit : IDisposable
     {
         private static EventLog customLog = null;
-        const string SourceName = "MonitoringServer.EventLogger.Audit";
-        const string LogName = "Inter-Client Communication";
+        const string SourceName = "Server.CMSWindowsEventLog.Audit";
+        const string LogName = "ServerEventLog";
 
         static Audit()
         {
@@ -19,7 +19,7 @@ namespace MonitoringServer.EventLogger
             {
                 if (!EventLog.SourceExists(SourceName))
                 {
-                    EventLog.CreateEventSource(SourceName, LogName);  
+                    EventLog.CreateEventSource(SourceName, LogName);
                 }
                 customLog = new EventLog(LogName, Environment.MachineName, SourceName);
 
@@ -32,36 +32,36 @@ namespace MonitoringServer.EventLogger
         }
 
 
-        public static void CommunicationStart(string client1, string client2)
+        public static void CreateCertificateAndKey(string userName)
         {
-            string message = AuditEvents.CommunicationStart;
+            string message = AuditEvents.CreateCertificateAndKey;
             if (customLog != null)
             {
-                string complete_message = String.Format(message, client1, client2);
+                string complete_message = String.Format(message, userName);
                 customLog.WriteEntry(complete_message);
             }
             else
             {
-                throw new ArgumentException(string.Format("Error while trying to write event (eventid = {0}) to event log.", (int)AuditEventTypes.CommunicationStart));
+                throw new ArgumentException(string.Format("Error while trying to write event (eventid = {0}) to event log.", (int)AuditEventTypes.CreateCertificateAndKey));
             }
 
 
         }
 
-        public static void CommunicationEnd(string client1, string client2)
+        public static void CertificateRevocated(string userName)
         {
-            string message = AuditEvents.CommunicationEnd;
+            string message = AuditEvents.CertificateRevocated;
             if (customLog != null)
             {
-                string complete_message = String.Format(message, client1, client2);
+                string complete_message = String.Format(message, userName);
                 customLog.WriteEntry(complete_message);
             }
             else
             {
-                throw new ArgumentException(string.Format("Error while trying to write event (eventid = {0}) to event log.", (int)AuditEventTypes.CommunicationEnd));
+                throw new ArgumentException(string.Format("Error while trying to write event (eventid = {0}) to event log.", (int)AuditEventTypes.CertificateRevocated));
             }
         }
-        
+
 
         public void Dispose()
         {

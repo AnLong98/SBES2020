@@ -48,6 +48,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Certificate\CertificateManager.cs" />
+    <Compile Include="CMSWindowsEventLog\Audit.cs" />
+    <Compile Include="CMSWindowsEventLog\AuditEventFile.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuditEventFile.resx</DependentUpon>
+    </Compile>
+    <Compile Include="CMSWindowsEventLog\AuditEvents.cs" />
     <Compile Include="GenerateKey\Generate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,6 +73,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UserCeritifactes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CMSWindowsEventLog\AuditEventFile.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuditEventFile.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
