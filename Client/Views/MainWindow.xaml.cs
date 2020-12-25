@@ -23,6 +23,7 @@ namespace Client
             MainWindowViewModel vm = new MainWindowViewModel(new ConnectionManager(), new ServiceHosts.ClientMessagingHost(), currentUser, new AESCryptographyProvider());
             vm.RevocateCertificateCommand = new RevocateCertificateCommand(vm);
             vm.StartChatCommand= new StartChatCommand(vm);
+            vm.LoadCertificateCommand = new LoadCertificateCommand(vm);
             DataContext = vm;
             InitializeComponent();
         }

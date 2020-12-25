@@ -21,6 +21,8 @@ public interface ICentralAuthServer  {
     [OperationContract]
 	void Authenticate(string ip, string port);
     [OperationContract]
+    void RequestCertificate();
+    [OperationContract]
     List<User> GetAllUsers();
     [OperationContract]
     void RevocateCertificate();

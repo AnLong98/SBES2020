@@ -1,9 +1,15 @@
 ﻿using Client.Contracts;
+using Common.Certificates;
+using Common.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Client.Managers
@@ -38,9 +44,14 @@ namespace Client.Managers
 
         public IClient GetClientProxy(string clientIP, string clientPort)
         {
+            string userName = WinLogonNameParser.ParseName(WindowsIdentity.GetCurrent().Name);
+
             NetTcpBinding binding = new NetTcpBinding();
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+            X509Certificate2 cltCert = CertificatesLoader.GetCertificateFromFile(userName + ".cer");
             ChannelFactory<IClient> channelFactory = new ChannelFactory<IClient>(binding, "net.tcp://127.0.0.1:0/Client");
-            channelFactory.Endpoint.Address = new EndpointAddress($"net.tcp://{clientIP}:{clientPort}/Client");
+            channelFactory.Endpoint.Address = new EndpointAddress(new Uri($"net.tcp://{clientIP}:{clientPort}/Client"),
+                                                                  new X509CertificateEndpointIdentity(cltCert));
             return channelFactory.CreateChannel();
 
         }

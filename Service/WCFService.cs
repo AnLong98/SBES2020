@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Common;
-using Common.Parsers;
 using Common.KeyManager;
 using Service.Certificate;
 using Service.GenerateKey;
@@ -30,22 +29,6 @@ namespace Service
             if (!Users.UserAccounts.ContainsKey(userName))
             {
                 Users.UserAccounts.Add(userName, new User(ip, port, userName));
-
-                var privKey = CertificateManager.GenerateCACertificate("CN=CentralServerCA");
-                var cert = CertificateManager.GenerateSelfSignedCertificate($"CN={userName}", "CN=CentralServerCA", privKey);
-                byte[] certBytes = cert.Export(X509ContentType.Pkcs12, "1234");
-
-                string outCertPath = $"../../UserCeritifactes/{userName}";
-                System.IO.Directory.CreateDirectory(Path.GetFullPath(outCertPath));
-
-                File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.cer"), cert.Export(X509ContentType.Cert));
-                File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.pfx"), cert.Export(X509ContentType.Pkcs12, "1234"));
-
-                SecretKeyHandler skh = new SecretKeyHandler();
-                string key = Generate.KeyGenerator();
-                skh.StoreKey(userName, key);
-
-                Audit.CreateCertificateAndKey(userName);
             }
         }
 
@@ -65,6 +48,29 @@ namespace Service
             }
 
             return users;
+        }
+
+        public void RequestCertificate()
+        {
+            IIdentity identity = Thread.CurrentPrincipal.Identity;
+            WindowsIdentity windowsIdentity = identity as WindowsIdentity;
+            string userName = WinLogonNameParser.ParseName(windowsIdentity.Name);
+
+            var privKey = CertificateManager.GenerateCACertificate("CN=CentralServerCA");
+            var cert = CertificateManager.GenerateSelfSignedCertificate($"CN={userName}", "CN=CentralServerCA", privKey);
+            byte[] certBytes = cert.Export(X509ContentType.Pkcs12, "1234");
+
+            string outCertPath = $"../../UserCeritifactes/{userName}";
+            System.IO.Directory.CreateDirectory(Path.GetFullPath(outCertPath));
+
+            File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.cer"), cert.Export(X509ContentType.Cert));
+            File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.pfx"), cert.Export(X509ContentType.Pkcs12, "1234"));
+
+            SecretKeyHandler skh = new SecretKeyHandler();
+            string key = Generate.KeyGenerator();
+            skh.StoreKey(userName, key);
+
+            Audit.CreateCertificateAndKey(userName);
         }
 
         public void RevocateCertificate()

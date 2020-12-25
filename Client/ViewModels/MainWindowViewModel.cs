@@ -42,9 +42,8 @@ namespace Client.ViewModels
 
         private void StartUp()
         {
-            host.Open();
             ConnectAuthToServer();
-            AuthenticateToAuthServer(host.GetIP(), host.GetPort().ToString());
+            RequestCertificate();
             //Users = MockUsers();
             Users = GetUsersFromServer();
         }
@@ -52,6 +51,7 @@ namespace Client.ViewModels
 
         #region Commands
         public ICommand RevocateCertificateCommand { get; set; }
+        public ICommand LoadCertificateCommand { get; set; }
         public ICommand StartChatCommand { get; set; }
         #endregion
 
@@ -105,6 +105,25 @@ namespace Client.ViewModels
             }
         }
 
+        public void LoadCertificate()
+        {
+
+            try
+            {
+                host.CreateService();
+                host.Open();
+                AuthenticateToAuthServer(host.GetIP(), host.GetPort().ToString());
+                GetUsersFromServer();
+
+                return;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error occured loading cert.");
+                Console.WriteLine(e.Message);
+            }
+        }
+
         private void AuthenticateToAuthServer(string ownIp, string ownPort)
         {
 
@@ -122,8 +141,27 @@ namespace Client.ViewModels
                 }
                 Thread.Sleep(5000);
             }
-
             
+        }
+
+        private void RequestCertificate()
+        {
+
+            while (true)
+            {
+                try
+                {
+                    centralAuthServer.RequestCertificate();
+                    return;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error occured contacting Central auth server. Click OK to try again...");
+                    ConnectAuthToServer();
+                }
+                Thread.Sleep(5000);
+            }
+
         }
 
         private BindingList<User> GetUsersFromServer()

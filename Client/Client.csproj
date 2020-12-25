@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\LoadCertificatesCommand.cs" />
     <Compile Include="Commands\RevocateCertificateCommand.cs" />
     <Compile Include="Commands\SendMessageCommand.cs" />
     <Compile Include="Commands\StartChatCommand.cs" />

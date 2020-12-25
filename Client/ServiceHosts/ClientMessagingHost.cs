@@ -1,13 +1,15 @@
 ﻿using Client.Service_Providers;
+using Common.Certificates;
+using Common.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.ServiceModel;
-using System.ServiceModel.Discovery;
 using System.ServiceModel.Security;
-using System.Text;
-using System.Windows;
+using System.Threading;
 
 namespace Client.ServiceHosts
 {
@@ -19,17 +21,23 @@ namespace Client.ServiceHosts
 
         public ClientMessagingHost()
         {
-            //binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+        }
+
+        public void CreateService()
+        {
+            string userName = WinLogonNameParser.ParseName(WindowsIdentity.GetCurrent().Name);
+
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
             host = new ServiceHost(typeof(MessageReceivingService));
-            //host.Description.Behaviors.Add(new ServiceDiscoveryBehavior());
-            //host.AddServiceEndpoint(new UdpDiscoveryEndpoint());
             host.AddServiceEndpoint(typeof(IClient), binding, address);
             host.Description.Endpoints[0].ListenUriMode = System.ServiceModel.Description.ListenUriMode.Unique;
 
-           /* host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
+            host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
             host.Credentials.ClientCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
-            host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, srvCertCN);*/
+            host.Credentials.ServiceCertificate.Certificate = CertificatesLoader.GetCertificateFromFile(userName + ".cer");
         }
+
+    
 
         public bool Open()
         {
