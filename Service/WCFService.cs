@@ -1,4 +1,4 @@
-﻿using Common.Parsers;
+using Common.Parsers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,17 +33,19 @@ namespace Service
 
                 var privKey = CertificateManager.GenerateCACertificate("CN=CentralServerCA");
                 var cert = CertificateManager.GenerateSelfSignedCertificate($"CN={userName}", "CN=CentralServerCA", privKey);
+                byte[] certBytes = cert.Export(X509ContentType.Pkcs12, "1234");
 
                 string outCertPath = $"../../UserCeritifactes/{userName}";
                 System.IO.Directory.CreateDirectory(Path.GetFullPath(outCertPath));
+
                 File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.cer"), cert.Export(X509ContentType.Cert));
+                File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.pfx"), cert.Export(X509ContentType.Pkcs12, "1234"));
 
                 SecretKeyHandler skh = new SecretKeyHandler();
                 string key = Generate.KeyGenerator();
                 skh.StoreKey(userName, key);
 
                 Audit.CreateCertificateAndKey(userName);
-
             }
         }
 
