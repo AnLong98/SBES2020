@@ -42,13 +42,11 @@ namespace Client.Managers
 
         }
 
-        public IClient GetClientProxy(string clientIP, string clientPort)
+        public IClient GetClientProxy(string clientIP, string clientPort, string clientUserName)
         {
-            string userName = WinLogonNameParser.ParseName(WindowsIdentity.GetCurrent().Name);
-
             NetTcpBinding binding = new NetTcpBinding();
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
-            X509Certificate2 cltCert = CertificatesLoader.GetCertificateFromFile(userName + ".cer");
+            X509Certificate2 cltCert = CertificatesLoader.GetCertificateFromStore(clientUserName, StoreName.TrustedPeople, StoreLocation.LocalMachine);
             ChannelFactory<IClient> channelFactory = new ChannelFactory<IClient>(binding, "net.tcp://127.0.0.1:0/Client");
             channelFactory.Endpoint.Address = new EndpointAddress(new Uri($"net.tcp://{clientIP}:{clientPort}/Client"),
                                                                   new X509CertificateEndpointIdentity(cltCert));

@@ -23,7 +23,7 @@ namespace Client.Service_Providers
                 //TODO: Change this awful code and architecture to something better
                 ConnectionManager connManager = new ConnectionManager();
                 AESCryptographyProvider cryptographyProvider = new AESCryptographyProvider();
-                ChatWindowManager.CreateNewChatWindow(sender, currentUser, connManager.GetClientProxy(ownIP, port), connManager.GetMonitorProxy(), cryptographyProvider);
+                ChatWindowManager.CreateNewChatWindow(sender, currentUser, connManager.GetClientProxy(ownIP, port, sender), connManager.GetMonitorProxy(), cryptographyProvider);
             }
         }
 

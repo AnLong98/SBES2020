@@ -34,7 +34,7 @@ namespace Client.ServiceHosts
 
             host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
             host.Credentials.ClientCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
-            host.Credentials.ServiceCertificate.Certificate = CertificatesLoader.GetCertificateFromFile(userName + ".cer");
+            host.Credentials.ServiceCertificate.Certificate = CertificatesLoader.GetCertificateFromStore(userName, StoreName.My, StoreLocation.LocalMachine);
         }
 
     
