@@ -3,3 +3,5 @@
 [22-12-2020 21:46:13]	sender: Predrag	receiver: wcfclient	message: "KAKO SI BATEMOIII"
 [22-12-2020 21:46:19]	sender: Predrag	receiver: wcfclient	message: "TESTESTSTSTS"
 [22-12-2020 21:46:23]	sender: Predrag	receiver: wcfclient	message: "AAAAAAAAAAAA"
+[27-12-2020 12:18:26]	sender: wcfclient	receiver: Predrag	message: "Cao predraze"
+[27-12-2020 12:18:49]	sender: Predrag	receiver: wcfclient	message: ""

@@ -8,6 +8,7 @@ using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.ServiceModel;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,12 +45,19 @@ namespace Client.Managers
 
         public IClient GetClientProxy(string clientIP, string clientPort, string clientUserName)
         {
+            string cltCertCN = WinLogonNameParser.ParseName(WindowsIdentity.GetCurrent().Name);
+
             NetTcpBinding binding = new NetTcpBinding();
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
             X509Certificate2 cltCert = CertificatesLoader.GetCertificateFromStore(clientUserName, StoreName.TrustedPeople, StoreLocation.LocalMachine);
             ChannelFactory<IClient> channelFactory = new ChannelFactory<IClient>(binding, "net.tcp://127.0.0.1:0/Client");
+            channelFactory.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.PeerOrChainTrust;
+            channelFactory.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
+            channelFactory.Credentials.ClientCertificate.Certificate = CertificatesLoader.GetCertificateFromStore(cltCertCN, StoreName.My, 
+                                                                                                                  StoreLocation.LocalMachine);
+            X509CertificateEndpointIdentity serviceIdentity = new X509CertificateEndpointIdentity(cltCert);
             channelFactory.Endpoint.Address = new EndpointAddress(new Uri($"net.tcp://{clientIP}:{clientPort}/Client"),
-                                                                  new X509CertificateEndpointIdentity(cltCert));
+                                                                  serviceIdentity);
             return channelFactory.CreateChannel();
 
         }

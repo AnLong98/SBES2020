@@ -26,13 +26,13 @@ namespace Client.ServiceHosts
         public void CreateService()
         {
             string userName = WinLogonNameParser.ParseName(WindowsIdentity.GetCurrent().Name);
-
+            binding.Security.Message.ClientCredentialType = MessageCredentialType.Windows;
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
             host = new ServiceHost(typeof(MessageReceivingService));
             host.AddServiceEndpoint(typeof(IClient), binding, address);
             host.Description.Endpoints[0].ListenUriMode = System.ServiceModel.Description.ListenUriMode.Unique;
 
-            host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.ChainTrust;
+            host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.PeerOrChainTrust;
             host.Credentials.ClientCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
             host.Credentials.ServiceCertificate.Certificate = CertificatesLoader.GetCertificateFromStore(userName, StoreName.My, StoreLocation.LocalMachine);
         }

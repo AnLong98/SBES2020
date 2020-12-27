@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Client.Service_Providers
@@ -14,16 +15,16 @@ namespace Client.Service_Providers
     [ServiceBehavior(AddressFilterMode = AddressFilterMode.Any, IncludeExceptionDetailInFaults = true)]
     public class MessageReceivingService : IClient
     {
-        public void SendCommunicationRequest(string ownIP, string port)
+        public void SendCommunicationRequest(string ownIP, string port, string ownUserName)
         {
-            string sender = WinLogonNameParser.ParseName(ServiceSecurityContext.Current.WindowsIdentity.Name);
+
             string currentUser = WinLogonNameParser.ParseName(WindowsIdentity.GetCurrent().Name);
-            if (!MessageNotificationManager.Instance().CheckExists(sender))
+            if (!MessageNotificationManager.Instance().CheckExists(ownUserName))
             {
                 //TODO: Change this awful code and architecture to something better
                 ConnectionManager connManager = new ConnectionManager();
                 AESCryptographyProvider cryptographyProvider = new AESCryptographyProvider();
-                ChatWindowManager.CreateNewChatWindow(sender, currentUser, connManager.GetClientProxy(ownIP, port, sender), connManager.GetMonitorProxy(), cryptographyProvider);
+                ChatWindowManager.CreateNewChatWindow(ownUserName, currentUser, connManager.GetClientProxy(ownIP, port, ownUserName), connManager.GetMonitorProxy(), cryptographyProvider);
             }
         }
 
