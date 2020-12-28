@@ -30,6 +30,12 @@ namespace Common.Parsers
                 parts = winLogonName.Split('/');
                 return parts[1];
             }
+            else if(winLogonName.Contains(";"))
+            {
+                ///UPN format
+                parts = winLogonName.Split(';');
+                return parts[0].Replace("CN=", "");
+            }
             else
             {
                 return winLogonName;

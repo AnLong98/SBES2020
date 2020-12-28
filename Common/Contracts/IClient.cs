@@ -23,5 +23,5 @@ public interface IClient  {
     /// 
     /// <param name="message"></param>
     [OperationContract]
-    void SendCommunicationRequest(string ownIP, string port, string ownUserName);
+    void SendCommunicationRequest(string ownIP, string port);
 }//end IClient

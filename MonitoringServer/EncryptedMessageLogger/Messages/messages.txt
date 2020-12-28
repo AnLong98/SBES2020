@@ -5,3 +5,8 @@
 [22-12-2020 21:46:23]	sender: Predrag	receiver: wcfclient	message: "AAAAAAAAAAAA"
 [27-12-2020 12:18:26]	sender: wcfclient	receiver: Predrag	message: "Cao predraze"
 [27-12-2020 12:18:49]	sender: Predrag	receiver: wcfclient	message: ""
+[28-12-2020 14:40:51]	sender: wcfclient	receiver: Predrag	message: "Caooos"
+[28-12-2020 14:40:57]	sender: wcfclient	receiver: Predrag	message: "Pedjiceee"
+[28-12-2020 14:41:04]	sender: Predrag	receiver: wcfclient	message: ""
+[28-12-2020 14:48:24]	sender: Predrag	receiver: wcfclient	message: ""
+[28-12-2020 14:48:56]	sender: wcfclient	receiver: Predrag	message: "POzzic"
