@@ -75,8 +75,18 @@ namespace Service
 
         public void RevocateCertificate()
         {
-            //Audit.CertificateRevocated(userName);
-            throw new NotImplementedException();
+            IIdentity identity = Thread.CurrentPrincipal.Identity;
+            WindowsIdentity windowsIdentity = identity as WindowsIdentity;
+            string userName = WinLogonNameParser.ParseName(windowsIdentity.Name);
+           
+            string outCertPath = $"../../UserCeritifactes/{userName}";
+
+            var privKey = CertificateManager.GenerateCACertificate("CN=CentralServerCA");
+            var cert = CertificateManager.GenerateSelfSignedCertificate($"CN={userName}", "CN=CentralServerCA", privKey);
+            byte[] certBytes = cert.Export(X509ContentType.Pkcs12, "1234");
+
+            File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.cer"), cert.Export(X509ContentType.Cert));
+            File.WriteAllBytes(Path.Combine(outCertPath, $"{userName}.pfx"), cert.Export(X509ContentType.Pkcs12, "1234"));
         }
     }
 }
