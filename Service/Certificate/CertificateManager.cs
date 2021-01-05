@@ -11,11 +11,15 @@ using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.X509;
+using Org.BouncyCastle.X509.Extension;
+using Org.BouncyCastle.X509.Store;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +28,8 @@ namespace Service.Certificate
 {
     public static class CertificateManager
     {
+        public static IList certRevocationList = new ArrayList();
+
         public static X509Certificate2 GenerateSelfSignedCertificate(string subjectName, string issuerName, AsymmetricKeyParameter issuerPrivKey)
         {
             const int keyStrength = 2048;
@@ -140,5 +146,45 @@ namespace Service.Certificate
             return issuerKeyPair.Private;
         }
 
+        public static void GenerateCRL()
+        {
+            X509Store CAstore = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
+            CAstore.Open(OpenFlags.ReadWrite | OpenFlags.OpenExistingOnly);
+
+            X509Certificate2Collection x509Certificate2Collection =
+            CAstore.Certificates.Find(X509FindType.FindBySubjectName, "CentralServerCA", true);
+
+            X509Certificate2 cert = x509Certificate2Collection[0];
+
+            var certCA = DotNetUtilities.FromX509Certificate(cert);
+            CAstore.Close();
+
+            X509V2CrlGenerator crlGen = new X509V2CrlGenerator();
+            crlGen.SetIssuerDN(certCA.IssuerDN);
+            crlGen.SetThisUpdate(DateTime.Now);
+            crlGen.SetNextUpdate(DateTime.Now.AddYears(1));
+            //crlGen.SetSignatureAlgorithm("SHA1withRSA"); is obsolute
+
+            crlGen.AddCrlEntry(BigInteger.One, DateTime.Now, CrlReason.PrivilegeWithdrawn);
+
+            crlGen.AddExtension(X509Extensions.AuthorityKeyIdentifier,
+                   false,
+                   new AuthorityKeyIdentifierStructure(certCA));
+
+            crlGen.AddExtension(X509Extensions.CrlNumber,
+                               false,
+                               new CrlNumber(BigInteger.One));
+
+
+            // algorithm used is wrong....
+            var randomGenerator = new CryptoApiRandomGenerator();
+            var random = new SecureRandom(randomGenerator);
+
+            var Akp = Org.BouncyCastle.Security.DotNetUtilities.GetKeyPair(cert.PrivateKey);
+
+            X509Crl crlTemp = crlGen.Generate(Akp.Private, random);
+            System.IO.File.WriteAllBytes(@"test.crl", crlTemp.GetEncoded());
+
+        }
     }
 }

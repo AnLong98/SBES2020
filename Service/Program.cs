@@ -1,4 +1,5 @@
 ﻿using Common.KeyManager;
+using Service.Certificate;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,9 @@ namespace Service
     {
         static void Main(string[] args)
         {
+            AppContext.SetSwitch("Switch.System.Security.Cryptography.Xml.UseInsecureHashAlgorithms", true);
+            AppContext.SetSwitch("Switch.System.Security.Cryptography.Pkcs.UseInsecureHashAlgorithms", true);
+
             NetTcpBinding binding = new NetTcpBinding();
             string address = "net.tcp://localhost:9998/Service";
 
@@ -35,6 +39,8 @@ namespace Service
             host.Open();
 
             Console.WriteLine("Servis je pokrenut.");
+
+            CertificateManager.GenerateCRL();
             Console.ReadLine();
         }
     }
