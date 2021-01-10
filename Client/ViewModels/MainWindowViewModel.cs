@@ -203,7 +203,7 @@ namespace Client.ViewModels
                 IClient clientProxy = connectionManager.GetClientProxy(user.Ip, user.Port, user.Username);
                 clientProxy.SendCommunicationRequest(host.GetIP(), host.GetPort().ToString());
                 ChatWindowManager.CreateNewChatWindow(user.Username, currentUserName, clientProxy, monitoringServerProxy, security);
-                //monitoringServerProxy.LogCommunicationStart(currentUserName, "drugi_klijent"); radi provere rada event logger-a
+                monitoringServerProxy.LogCommunicationStart(currentUserName, user.Username); 
             }
             catch (Exception e)
             {
